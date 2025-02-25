@@ -7,8 +7,8 @@ Introduction to JS: setup, tools /deno, VS Code, git, and GitHub/, exercises wit
 * Initialize a git repo locally with `git init`
 * Fire up the VS Code, install the [deno](https://docs.deno.com/runtime/reference/vscode/) extension
 * Learn about JS `export`, `function`, string-plitting and `Deno.test` and *deno*s `deno test --watch` and `deno run <file>` commands
-* Write a couple of recursive functions working with arrays in *head\tail* style to get a feel for the syntax and the process. The exercises would be about tokenizing a string, and storing them in an array. We might go for nested parentheses as well, if time allows.
-* Learn about the `Deno.readTextFileSync` and the `--allow-read` flag through a simple exerciseof reading and printing the contents of a file.
+* Write a couple of recursive functions working with arrays in *head\tail* style to get a feel for the syntax and the process. The exercises would be about tokenizing a string, and storing them in an array. We might go for parentheses as well, if time allows, and store them as a list.
+* Learn about the `Deno.readTextFileSync` and the `--allow-read` flag through a simple exercise of reading and printing the contents of a file.
 * Write a function that reads a file and returns the tokenized contents as an array.
 
 * Register on GitHub, create a repo
@@ -32,17 +32,36 @@ Introduction to LISPs/probably with Racket/: the infix notation and getting used
 
 Coding the SLIm tokenizer in JS. Reading a file and turning it into an array of tokens. If we are doing well, maybe we'll also introduce and handle multiline strings and comments.
 
+* Assign types to tokens during tokenization: strings, numbers and atoms.
+* Handle nested parentheses
+* Extra: ignore line comments /lines that start with a ';'/ during tokenization
+
+**NOTE:** Here, to avoid using classes I am leaning towards tuples of the form `[type, value]` where `type` is a string and `value` is the actual value of the token. TBD.
+
 ## Day 4
 
-We introduce the notion of evaluation\application, starting with evaluation\application of primitive values /'true', 'false', whole numbers and strings/ and primitive operations /cons, car, cdr, null?, '+', '-', .../. The concrete primitives of SLIm will be decided during the course.
+Introducing the notion of evaluation\application, starting with evaluation\application of primitive values /'true', 'false', whole numbers and strings/ and primitive operations /cons, car, cdr, null?, '+', '-', .../. The concrete primitives of SLIm will be decided during the course.
+
+* Implement the `meaning` function for primitives atoms: `true`, `false`, numbers, and strings
+* Implement the `meaning` function for lists\application in case of primitive operations: `cons`, `car`, `cdr`, `null?`, `eq?`, `+`, `-`
+* Extra: implement `*`, `/`, `not`, `and` and `or`. This also might be a homework exercise.
 
 ## Day 5
 
 We continue with the evaluation of expressions by introducing the `define` form and the idea of the environment. For simplicity, we resort to a single global environment implemented as a stack data structure.
 
+* Learn about the environment /entry -> frame -> environment/ and model it as a simple stack
+* Implement the lookup function in frames and entries the environment
+* Implement extension methods for  frames and entries of the environment
+* Implement the `define` form and the `meaning` function for it. Learn that not all forms evaluate to a value.
+
 ## Day 6
 
-We move on to introducing evaluating non-primitive forms /'cond', 'lambda', and 'quote'/. These are rather code-heavy days, so we might split them into two days.
+We move on to introducing evaluating non-primitive forms /'cond' and 'quote'/.
+
+* Implement the `meaning` function for the `quote` form
+* Implement the `meaning` function for the `cond` form, Learn about branching and the idea of the 'else' clause
+* Extra: implement the `if` form. This also might be a homework exercise.
 
 ## Day 7
 
