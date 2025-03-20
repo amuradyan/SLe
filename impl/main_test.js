@@ -1,37 +1,6 @@
 import { assertAlmostEquals, assertEquals } from "@std/assert";
 
-const detoke = (input) => {
-  const graphemes = Array.from(input.trim());
-
-  const loop = (
-    [graphemeAtHand, ...restOfGraphemes],
-    tokens = [],
-    tokenSoFar = "",
-  ) => {
-    if (!graphemeAtHand) {
-      return tokenSoFar.length > 0 ? [...tokens, tokenSoFar] : tokens;
-    }
-
-    switch (graphemeAtHand) {
-      case "(":
-      case ")":
-        return loop(restOfGraphemes, tokens, tokenSoFar);
-      case " ":
-        return loop(restOfGraphemes, [...tokens, tokenSoFar]);
-      default:
-        return loop(restOfGraphemes, tokens, tokenSoFar + graphemeAtHand);
-    }
-  };
-
-  const typeify = ([operator, ...rest]) => {
-    const args = rest.map((x) => Number.parseInt(x));
-    return [Symbol.for(operator), ...args];
-  };
-
-  const tokens = loop(graphemes);
-
-  return typeify(tokens);
-};
+import {detoke} from "./slim.js"
 
 Deno.test("tokenize", () => {
   assertEquals(detoke("(luminance 255 255 255)"), [
@@ -70,12 +39,14 @@ Deno.test("Calculate luminance", (t) => {
 
   //  ---> Tagavor <---
 
-  const [noperator, ...noperands] = detoke(program);
-  const compute = lookupFromEnv(noperator); // This will later grow into lookp
+  const dnevalni = (expression, env = []) => {
+    const [noperator, ...noperands] = detoke(expression);
+    const compute = lookupFromEnv(noperator); // This will later grow into lookp
 
-  const result = compute(...noperands);
+    return compute(...noperands);
+  }
 
-  assertAlmostEquals(result, luminance);
+  assertAlmostEquals(dnevalni(program), luminance);
   // ----------------------
 
   // const operator = ([first]) => first
