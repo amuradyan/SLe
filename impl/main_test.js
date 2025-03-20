@@ -1,12 +1,7 @@
-import { assertEquals } from "@std/assert";
-import { add } from "./main.js";
-
-Deno.test(function addTest() {
-  assertEquals(add(2, 3), 5);
-});
+import { assertAlmostEquals, assertEquals } from "@std/assert";
 
 const detoke = (input) => {
-  const graphemes = Array.from(input.trim())
+  const graphemes = Array.from(input.trim());
 
   const loop = (
     [graphemeAtHand, ...restOfGraphemes],
@@ -29,27 +24,80 @@ const detoke = (input) => {
   };
 
   const typeify = ([operator, ...rest]) => {
-      const args = rest.map((x) => Number.parseInt(x));
-      return [Symbol.for(operator), ...args];
+    const args = rest.map((x) => Number.parseInt(x));
+    return [Symbol.for(operator), ...args];
   };
 
-  const tokens = loop(graphemes)
+  const tokens = loop(graphemes);
 
-  return typeify(tokens)
+  return typeify(tokens);
 };
 
-Deno.test("tokenize", async (t) => {
-  assertEquals(detoke( "(color 255 255 255)"), [Symbol.for("color"), 255, 255, 255])
-  assertEquals(detoke(`
+Deno.test("tokenize", () => {
+  assertEquals(detoke("(luminance 255 255 255)"), [
+    Symbol.for("luminance"),
+    255,
+    255,
+    255,
+  ]);
+  assertEquals(
+    detoke(`
     (color 255 255 255)
-    `), [Symbol.for("color"), 255, 255, 255])
+  `),
+    [Symbol.for("color"), 255, 255, 255],
+  );
 });
 
-Deno.test("Calculate luminance", async (t) => {
+// - evaluator applies operator to its operands
+// - which one is the operator : 1st
+// - what are the operands: rest
+// ------------------------------------
+// - /where to look for/ what do the operator and operands mean -> Environment
+// What is an environment?
+
+Deno.test("Calculate luminance", (t) => {
   const program = "(luminance 49 135 50)";
-  const luminance = 0.128
+  const luminance = 110.5794;
+
+  const env = [
+    Symbol.for("luminance"),
+    (red, green, blue) => 0.2126 * red + 0.7152 * green + 0.0722 * blue,
+  ];
+
+  const lookupFromEnv = () => {
+    return env[1];
+  };
+
+  //  ---> Tagavor <---
+
+  const [noperator, ...noperands] = detoke(program);
+  const compute = lookupFromEnv(noperator); // This will later grow into lookp
+
+  const result = compute(...noperands);
+
+  assertAlmostEquals(result, luminance);
+  // ----------------------
+
+  // const operator = ([first]) => first
+  // const operands = ([_, ...rest]) = rest
+
+  // const evals = (apply?(operator, operands))
+
+  // const bindings = {
+  //   'luminance': () => undefined
+  // }
+
+  // const frame = [
+  //   [Symbol.for("luminance"), () => {}]
+  // ]
+
+  // const env = [
+  //   [
+  //     [,]
+  //   ]
+  // ]
 
   // const persept = ???
 
-  // assert(percept(program), luminance)
+  // assertEquals(percept(program), luminance);
 });
