@@ -31,14 +31,17 @@ export const detoke = (input) => {
   return typeify(tokens);
 };
 
+export const lookupFromEnv = (name, definitions) => {
+  const matchingDefinition = definitions.find(([key]) => key === name);
+  if (matchingDefinition) {
+    return matchingDefinition[1];
+  }
+};
+
 export const dnevalni = (expression, definitions = []) => {
   const [noperator, ...noperands] = detoke(expression);
 
-  const lookupFromEnv = (name) => {
-    return definitions[0][1];
-  };
-
-  const compute = lookupFromEnv(noperator); // This will later grow into lookup
+  const compute = lookupFromEnv(noperator, definitions); // This will later grow into lookup
 
   return compute(...noperands);
 };

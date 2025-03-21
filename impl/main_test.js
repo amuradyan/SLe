@@ -47,6 +47,7 @@ Deno.test("Calculate luminance", () => {
   };
 
   assertAlmostEquals(dnevalni(program), luminance);
+  // Baraxolka
   // ----------------------
 
   // const operator = ([first]) => first
