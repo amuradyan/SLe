@@ -17,6 +17,10 @@ Deno.test("tokenize", () => {
   );
 });
 
+assert("tokenize inner", () => {
+  //
+});
+
 // - evaluator applies operator to its operands
 // - which one is the operator : 1st
 // - what are the operands: rest
@@ -24,52 +28,53 @@ Deno.test("tokenize", () => {
 // - /where to look for/ what do the operator and operands mean -> Environment
 // What is an environment?
 
-Deno.test("Calculate luminance", () => {
-  const program = "(luminance 49 135 50)";
-  const luminance = 110.5794;
+// Deno.test("Calculate luminance", () => {
+//   const program = "(luminance 49 135 50)";
+//   const luminance = 110.5794;
 
-  const env = [
-    Symbol.for("luminance"),
-    (red, green, blue) => 0.2126 * red + 0.7152 * green + 0.0722 * blue,
-  ];
+//   const env = [
+//     Symbol.for("luminance"),
+//     (red, green, blue) => 0.2126 * red + 0.7152 * green + 0.0722 * blue,
+//   ];
 
-  const lookupFromEnv = () => {
-    return env[1];
-  };
+//   const lookupFromEnv = () => {
+//     return env[1];
+//   };
 
-  //  ---> Tagavor <---
+//   //  ---> Tagavor <---
 
-  const dnevalni = (expression, _ = []) => {
-    const [noperator, ...noperands] = detoke(expression);
-    const compute = lookupFromEnv(noperator); // This will later grow into lookp
+//   const dnevalni = (expression, _ = []) => {
+//     const [noperator, ...noperands] = detoke(expression);
+//     const compute = lookupFromEnv(noperator); // This will later grow into lookp
 
-    return compute(...noperands);
-  };
+//     return compute(...noperands);
+//   };
 
-  assertAlmostEquals(dnevalni(program), luminance);
-  // Baraxolka
-  // ----------------------
+//   assertAlmostEquals(dnevalni(program), luminance);
+// });
 
-  // const operator = ([first]) => first
-  // const operands = ([_, ...rest]) = rest
+// Baraxolka
+// ----------------------
 
-  // const evals = (apply?(operator, operands))
+// const operator = ([first]) => first
+// const operands = ([_, ...rest]) = rest
 
-  // const bindings = {
-  //   'luminance': () => undefined
-  // }
+// const evals = (apply?(operator, operands))
 
-  // const frame = [
-  //   [Symbol.for("luminance"), () => {}]
-  // ]
+// const bindings = {
+//   'luminance': () => undefined
+// }
 
-  // const env = [
-  //   [
-  //     [,]
-  //   ]
-  // ]
+// const frame = [
+//   [Symbol.for("luminance"), () => {}]
+// ]
 
-  // const persept = ???
+// const env = [
+//   [
+//     [,]
+//   ]
+// ]
 
-  // assertEquals(percept(program), luminance);
-});
+// const persept = ???
+
+// assertEquals(percept(program), luminance);

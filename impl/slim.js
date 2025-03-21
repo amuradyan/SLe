@@ -10,6 +10,17 @@ export const detoke = (input) => {
       return tokenSoFar.length > 0 ? [...tokens, tokenSoFar] : tokens;
     }
 
+    // (+ (/ 1 2 3)) []
+    // ( - [][]
+    // + -> [][+]
+    // ( -> [][+][]
+    // / -> [][+][/]
+    // 1 -> [][+][/ 1]
+    // 2 -> [][+][/ 1 2]
+    // 3 -> [][+][/ 1 2 3]
+    // ) -> [][+ [/ 1 2 3]]
+    // ) -> [[+ [/ 1 2 3]]]
+
     switch (graphemeAtHand) {
       case "(":
       case ")":
@@ -21,6 +32,8 @@ export const detoke = (input) => {
     }
   };
 
+  // We assume that the exoressins are of form (name number number number ...)
+  // We, now have to parse (name (name number number number))
   const typeify = ([operator, ...rest]) => {
     const args = rest.map((x) => Number.parseInt(x));
     return [Symbol.for(operator), ...args];
@@ -75,3 +88,6 @@ if (import.meta.main) {
 
   console.table([{ program, result }], ["program", "result"]);
 }
+
+////
+// (())
