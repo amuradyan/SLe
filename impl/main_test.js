@@ -17,7 +17,7 @@ Deno.test("tokenize", () => {
   );
 });
 
-assert("tokenize inner", () => {
+Deno.test("tokenize inner", () => {
   //
 });
 

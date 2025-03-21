@@ -13,7 +13,7 @@ export const detoke = (input) => {
     }
 
     // (+ (/ 1 2 3)) []
-    // ( - [][]
+    // ( -> [][]
     // + -> [][+]
     // ( -> [][+][]
     // / -> [][+][/]
@@ -22,6 +22,8 @@ export const detoke = (input) => {
     // 3 -> [][+][/ 1 2 3]
     // ) -> [][+ [/ 1 2 3]]
     // ) -> [[+ [/ 1 2 3]]]
+
+    // trunx
 
     switch (graphemeAtHand) {
       case "(":
@@ -54,11 +56,19 @@ export const lookupFromEnv = (name, definitions) => {
 };
 
 export const dnevalni = (expression, definitions = []) => {
+  // + (/ 1 2 3)) []
+
   const [noperator, ...noperands] = detoke(expression);
+
+  // -> [[+ [/ 1 2 3]]]
 
   const compute = lookupFromEnv(noperator, definitions); // This will later grow into lookup
 
-  return compute(...noperands);
+  // [+ 1 2]
+
+  // tokens: [+ [/ 1 2 3]]
+  // fn+ [1,1]
+  return compute(evlist(...noperands, definitions));
 };
 
 // word -> words, start from one go to many
