@@ -1,6 +1,6 @@
 import { assertAlmostEquals, assertEquals } from "@std/assert";
 
-import {detoke} from "./slim.js"
+import { detoke } from "./slim.js";
 
 Deno.test("tokenize", () => {
   assertEquals(detoke("(luminance 255 255 255)"), [
@@ -24,7 +24,7 @@ Deno.test("tokenize", () => {
 // - /where to look for/ what do the operator and operands mean -> Environment
 // What is an environment?
 
-Deno.test("Calculate luminance", (t) => {
+Deno.test("Calculate luminance", () => {
   const program = "(luminance 49 135 50)";
   const luminance = 110.5794;
 
@@ -39,12 +39,12 @@ Deno.test("Calculate luminance", (t) => {
 
   //  ---> Tagavor <---
 
-  const dnevalni = (expression, env = []) => {
+  const dnevalni = (expression, _ = []) => {
     const [noperator, ...noperands] = detoke(expression);
     const compute = lookupFromEnv(noperator); // This will later grow into lookp
 
     return compute(...noperands);
-  }
+  };
 
   assertAlmostEquals(dnevalni(program), luminance);
   // ----------------------
