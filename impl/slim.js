@@ -1,3 +1,5 @@
+const atom = Symbol.for;
+
 export const detoke = (input) => {
   const graphemes = Array.from(input.trim());
 
@@ -36,7 +38,7 @@ export const detoke = (input) => {
   // We, now have to parse (name (name number number number))
   const typeify = ([operator, ...rest]) => {
     const args = rest.map((x) => Number.parseInt(x));
-    return [Symbol.for(operator), ...args];
+    return [atom(operator), ...args];
   };
 
   const tokens = loop(graphemes);
@@ -63,19 +65,19 @@ export const dnevalni = (expression, definitions = []) => {
 
 export const definitions = [
   [
-    Symbol.for("luminance"),
+    atom("luminance"),
     (red, green, blue) => 0.2126 * red + 0.7152 * green + 0.0722 * blue,
   ],
   [
-    Symbol.for("average-brightness"),
+    atom("average-brightness"),
     (red, green, blue) => (red + green + blue) / 3,
   ],
   [
-    Symbol.for("+"),
+    atom("+"),
     (a, b) => a + b,
   ],
   [
-    Symbol.for("/"),
+    atom("/"),
     (a, b) => a / b,
   ],
 ];
