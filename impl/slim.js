@@ -57,6 +57,14 @@ export const definitions = [
     Symbol.for("average-brightness"),
     (red, green, blue) => (red + green + blue) / 3,
   ],
+  [
+    Symbol.for("+"),
+    (a, b) => a + b,
+  ],
+  [
+    Symbol.for("/"),
+    (a, b) => a / b,
+  ],
 ];
 
 // Learn more at https://docs.deno.com/runtime/manual/examples/module_metadata#concepts
