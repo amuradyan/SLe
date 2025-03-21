@@ -31,27 +31,36 @@ export const detoke = (input) => {
   return typeify(tokens);
 };
 
-export const dnevalni = (expression, env = []) => {
+export const dnevalni = (expression, definitions = []) => {
   const [noperator, ...noperands] = detoke(expression);
 
-  const lookupFromEnv = () => {
-    return env[1];
+  const lookupFromEnv = (name) => {
+    return definitions[0][1];
   };
-  const compute = lookupFromEnv(noperator); // This will later grow into lookp
+
+  const compute = lookupFromEnv(noperator); // This will later grow into lookup
 
   return compute(...noperands);
 };
+
+// word -> words, start from one go to many
+
+export const definitions = [
+  [
+    Symbol.for("luminance"),
+    (red, green, blue) => 0.2126 * red + 0.7152 * green + 0.0722 * blue,
+  ],
+  [
+    Symbol.for("average-brightness"),
+    (red, green, blue) => (red + green + blue) / 3,
+  ],
+];
 
 // Learn more at https://docs.deno.com/runtime/manual/examples/module_metadata#concepts
 if (import.meta.main) {
   const [program] = Deno.args;
 
-  const env = [
-    Symbol.for("luminance"),
-    (red, green, blue) => 0.2126 * red + 0.7152 * green + 0.0722 * blue,
-  ];
-
-  const result = dnevalni(program, env);
+  const result = dnevalni(program, definitions);
 
   console.table([{ program, result }], ["program", "result"]);
 }
