@@ -8,7 +8,7 @@ Deno.test("slim snippets", async (t) => {
     fn: () => {
       const code = `
         (luminance 10 10 10)
-    `;
+      `;
 
       const result = run(code);
 
@@ -23,7 +23,7 @@ Deno.test("slim snippets", async (t) => {
     fn: () => {
       const code = `
         (average-brightness 10 40 10)
-    `;
+      `;
 
       const result = run(code);
       assertAlmostEquals(result, 20);
@@ -33,6 +33,16 @@ Deno.test("slim snippets", async (t) => {
   await t.step("average brightness - 2 - unfolded in sle", () => {
     const code = `
       (/ (+ 10 40 10) 3)
+    `;
+
+    const result = run(code);
+
+    assertAlmostEquals(result, 20);
+  });
+
+  await t.step("average brightness - 2 - unfolded in sle", () => {
+    const code = `
+      (/ (+ (/ (+ a a) 2) 40 a) 3)
     `;
 
     const result = run(code);

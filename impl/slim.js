@@ -120,6 +120,10 @@ export const dnevalni = (expression, definitions = []) => {
     return expression;
   }
 
+  if (typeof expression === "symbol") {
+    return lookupFromEnv(expression, definitions);
+  }
+
   if (Array.isArray(expression)) {
     const [noperator, ...noperands] = expression;
     console.log({ noperator }, { noperands });
@@ -162,6 +166,10 @@ export const definitions = [
   [
     atom("/"),
     ([a, b]) => a / b,
+  ],
+  [
+    atom("a"),
+    10,
   ],
 ];
 
