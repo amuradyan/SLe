@@ -37,12 +37,12 @@ export const detoke = (input) => {
           ? [...currentScope, tokenSoFar]
           : currentScope;
 
-        const newProgressiveScope = [
-          [],
-          updatedCurrentScope,
-          parentScope,
-          ...outerScopes,
-        ];
+        const newProgressiveScope = parentScope && parentScope.length > 0
+          ? [[], updatedCurrentScope, parentScope, ...outerScopes]
+          : [[], updatedCurrentScope, ...outerScopes];
+
+        console.log({ updatedCurrentScope });
+        console.log({ newProgressiveScope });
 
         return loop(
           restOfGraphemes,
@@ -51,21 +51,43 @@ export const detoke = (input) => {
         );
       }
       case ")": {
-        const newCurrentScope = [...currentScope, tokenSoFar];
+        const updatedCurrentScope = tokenSoFar.length > 0
+          ? [...currentScope, tokenSoFar]
+          : currentScope;
+
+        const innerHead = parentScope && parentScope.length > 0
+          ? [...parentScope, updatedCurrentScope]
+          : updatedCurrentScope;
+
         const newProgressiveScope = [
-          newCurrentScope,
+          innerHead,
+          ...outerScopes,
+        ];
+
+        console.log({ updatedCurrentScope });
+        console.log({ newProgressiveScope });
+
+        return loop(restOfGraphemes, "", newProgressiveScope);
+      }
+      case " ": {
+        const updatedCurrentScope = tokenSoFar.length > 0
+          ? [...currentScope, tokenSoFar]
+          : currentScope;
+
+        const newProgressiveScope = [
+          updatedCurrentScope,
           parentScope,
           ...outerScopes,
         ];
 
-        return loop(restOfGraphemes, tokenSoFar, newProgressiveScope);
-      }
-      case " ":
+        console.log({ newProgressiveScope });
+
         return loop(
           restOfGraphemes,
           "",
-          [[...currentScope, tokenSoFar], parentScope, ...outerScopes],
+          newProgressiveScope,
         );
+      }
       default:
         return loop(
           restOfGraphemes,
@@ -98,16 +120,19 @@ export const dnevalni = (expression, definitions = []) => {
   // + (/ 1 2 3)) []
 
   const [noperator, ...noperands] = detoke(expression);
+  console.log({ noperator }, { noperands });
 
   // -> [[+ [/ 1 2 3]]]
 
   const compute = lookupFromEnv(noperator, definitions); // This will later grow into lookup
 
+  console.log({ definitions });
+
   // [+ 1 2]
 
   // tokens: [+ [/ 1 2 3]]
   // fn+ [1,1]
-  return compute(...noperands, definitions);
+  return compute(...noperands);
 };
 
 // word -> words, start from one go to many
@@ -123,7 +148,10 @@ export const definitions = [
   ],
   [
     atom("+"),
-    (a, b) => a + b,
+    (...numbers) => {
+      console.log({ numbers });
+      return numbers.reduce((acc, number) => acc + number, 0);
+    },
   ],
   [
     atom("/"),

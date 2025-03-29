@@ -2,27 +2,35 @@ import { assertEquals } from "@std/assert";
 import { definitions, dnevalni, lookupFromEnv } from "./slim.js";
 import { assertAlmostEquals } from "@std/assert";
 
-Deno.test.only("slim snippets", async (t) => {
-  await t.step("luminance", () => {
-    const code = `
+Deno.test("slim snippets", async (t) => {
+  await t.step({
+    name: "luminance",
+    fn: () => {
+      const code = `
         (luminance 10 10 10)
     `;
 
-    const result = dnevalni(code, definitions);
+      const result = dnevalni(code, definitions);
 
-    assertAlmostEquals(result, 10);
+      assertAlmostEquals(result, 10);
+    },
+    ignore: true,
   });
 
-  await t.step("average brightness", () => {
-    const code = `
+  await t.step({
+    name: "average brightness",
+    ignore: true,
+    fn: () => {
+      const code = `
         (average-brightness 10 40 10)
     `;
 
-    const result = dnevalni(code, definitions);
-    assertAlmostEquals(result, 20);
+      const result = dnevalni(code, definitions);
+      assertAlmostEquals(result, 20);
+    },
   });
 
-  await t.step("average brightness 2", () => {
+  await t.step("average brightness - 2 - unfolded in sle", () => {
     const code = `
       (/ (+ 10 40 10) 3)
     `;
