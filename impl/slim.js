@@ -5,38 +5,61 @@ export const detoke = (input) => {
 
   const loop = (
     [graphemeAtHand, ...restOfGraphemes],
-    tokens = [],
     tokenSoFar = "",
+    localScope = [],
+    globalScope = [],
   ) => {
     if (!graphemeAtHand) {
-      return tokenSoFar.length > 0 ? [...tokens, tokenSoFar] : tokens;
+      console.log({
+        event: "END_OF_INPUT",
+        result: tokenSoFar.length > 0
+          ? [...localScope, tokenSoFar]
+          : localScope,
+      });
+      return tokenSoFar.length > 0 ? [...localScope, tokenSoFar] : localScope;
     }
 
-    // (+ (/ 1 2 3)) []
-    // ( -> [][]
-    // + -> [][+]
-    // ( -> [][+][]
-    // / -> [][+][/]
-    // 1 -> [][+][/ 1]
-    // 2 -> [][+][/ 1 2]
-    // 3 -> [][+][/ 1 2 3]
-    // ) -> [][+ [/ 1 2 3]]
-    // ) -> [[+ [/ 1 2 3]]]
-
-    // trunx
+    console.log({
+      event: "PROCESS_GRAPHEME",
+      graphemeAtHand,
+      restOfGraphemes,
+      tokenSoFar,
+      localScope,
+      globalScope,
+    });
 
     switch (graphemeAtHand) {
-      case "(":
+      case "(": {
+        const newGlobalScope = [...globalScope, [...localScope, tokenSoFar]];
+        // since ( and ) are separators, we trait them as spaces
+        // open a new local scope, within the current local scope as it's parent
+        return loop(
+          restOfGraphemes,
+          "",
+          [],
+          newGlobalScope,
+        );
+      }
       case ")":
-        return loop(restOfGraphemes, tokens, tokenSoFar);
+        return loop(restOfGraphemes, tokenSoFar, localScope, globalScope);
       case " ":
-        return loop(restOfGraphemes, [...tokens, tokenSoFar]);
+        return loop(
+          restOfGraphemes,
+          "",
+          [...localScope, tokenSoFar],
+          globalScope,
+        );
       default:
-        return loop(restOfGraphemes, tokens, tokenSoFar + graphemeAtHand);
+        return loop(
+          restOfGraphemes,
+          tokenSoFar + graphemeAtHand,
+          localScope,
+          globalScope,
+        );
     }
   };
 
-  // We assume that the exoressins are of form (name number number number ...)
+  // We assume that the expressions are of form (name number number number)
   // We, now have to parse (name (name number number number))
   const typeify = ([operator, ...rest]) => {
     const args = rest.map((x) => Number.parseInt(x));
@@ -68,7 +91,7 @@ export const dnevalni = (expression, definitions = []) => {
 
   // tokens: [+ [/ 1 2 3]]
   // fn+ [1,1]
-  return compute(evlist(...noperands, definitions));
+  return compute(...noperands, definitions);
 };
 
 // word -> words, start from one go to many
@@ -100,6 +123,3 @@ if (import.meta.main) {
 
   console.table([{ program, result }], ["program", "result"]);
 }
-
-////
-// (())

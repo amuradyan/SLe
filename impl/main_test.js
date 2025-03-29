@@ -1,4 +1,4 @@
-import { assertAlmostEquals, assertEquals } from "@std/assert";
+import { assertEquals } from "@std/assert";
 
 import { detoke } from "./slim.js";
 
@@ -17,8 +17,23 @@ Deno.test("tokenize", () => {
   );
 });
 
-Deno.test("tokenize inner", () => {
-  //
+Deno.test.ignore("tokenize nested parens", () => {
+  // (/ (+ 10 40 10) 3) [[]]
+
+  // (  -> [[] []]
+  // /  -> [[/] []]
+  // (  -> [[] [/] []]
+  // +  -> [[+] [/] []]
+  // 10 -> [[+ 10] [/] []]
+  // 40 -> [[+ 10 40] [/] []]
+  // 10 -> [[+ 10 40 10] [/]   []]
+  // )  -> [[/ [+ 10 40 10]]   []]
+  // 3  -> [[/ [+ 10 40 10] 3] []]
+  // )  -> [[[/ [+ 10 40 10] 3]]]
+
+  assertEquals(detoke("(/ (+ 10 40 10) 3)"), [
+    [Symbol.for("/"), [Symbol.for("+"), 10, 40, 10], 3],
+  ]);
 });
 
 // - evaluator applies operator to its operands
