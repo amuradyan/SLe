@@ -6,55 +6,71 @@ export const detoke = (input) => {
   const loop = (
     [graphemeAtHand, ...restOfGraphemes],
     tokenSoFar = "",
-    localScope = [],
-    globalScope = [],
+    progressiveScope = [[]],
   ) => {
+    const [currentScope, parentScope, ...outerScopes] = progressiveScope;
+
     if (!graphemeAtHand) {
-      console.log({
-        event: "END_OF_INPUT",
-        result: tokenSoFar.length > 0
-          ? [...localScope, tokenSoFar]
-          : localScope,
-      });
-      return tokenSoFar.length > 0 ? [...localScope, tokenSoFar] : localScope;
+      // console.log("End of input stream", progressiveScope);
+      // return tokenSoFar.length > 0
+      //   ? [...currentScope, tokenSoFar]
+      //   : currentScope;
+      return currentScope;
     }
 
     console.log({
       event: "PROCESS_GRAPHEME",
-      graphemeAtHand,
-      restOfGraphemes,
-      tokenSoFar,
-      localScope,
-      globalScope,
+    });
+    console.log(
+      `Grapheme at : "${graphemeAtHand}" [${restOfGraphemes}]\n`,
+      `Token So far: "${tokenSoFar}"`,
+    );
+    console.log({ currentScope });
+    console.log({
+      parentScope,
+      outerScopes,
     });
 
     switch (graphemeAtHand) {
       case "(": {
-        const newGlobalScope = [...globalScope, [...localScope, tokenSoFar]];
-        // since ( and ) are separators, we trait them as spaces
-        // open a new local scope, within the current local scope as it's parent
+        const updatedCurrentScope = tokenSoFar.length > 0
+          ? [...currentScope, tokenSoFar]
+          : currentScope;
+
+        const newProgressiveScope = [
+          [],
+          updatedCurrentScope,
+          parentScope,
+          ...outerScopes,
+        ];
+
         return loop(
           restOfGraphemes,
           "",
-          [],
-          newGlobalScope,
+          newProgressiveScope,
         );
       }
-      case ")":
-        return loop(restOfGraphemes, tokenSoFar, localScope, globalScope);
+      case ")": {
+        const newCurrentScope = [...currentScope, tokenSoFar];
+        const newProgressiveScope = [
+          newCurrentScope,
+          parentScope,
+          ...outerScopes,
+        ];
+
+        return loop(restOfGraphemes, tokenSoFar, newProgressiveScope);
+      }
       case " ":
         return loop(
           restOfGraphemes,
           "",
-          [...localScope, tokenSoFar],
-          globalScope,
+          [[...currentScope, tokenSoFar], parentScope, ...outerScopes],
         );
       default:
         return loop(
           restOfGraphemes,
           tokenSoFar + graphemeAtHand,
-          localScope,
-          globalScope,
+          progressiveScope,
         );
     }
   };

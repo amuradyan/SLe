@@ -2,7 +2,7 @@ import { assertEquals } from "@std/assert";
 import { definitions, dnevalni, lookupFromEnv } from "./slim.js";
 import { assertAlmostEquals } from "@std/assert";
 
-Deno.test("slim snippets", async (t) => {
+Deno.test.only("slim snippets", async (t) => {
   await t.step("luminance", () => {
     const code = `
         (luminance 10 10 10)
