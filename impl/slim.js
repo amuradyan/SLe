@@ -4,9 +4,9 @@ export const detoke = (input) => {
   const graphemes = Array.from(input.trim());
 
   const loop = (
+    progressiveScope,
     [graphemeAtHand, ...restOfGraphemes],
     tokenSoFar = "",
-    progressiveScope = [[]],
   ) => {
     const [currentScope, parentScope, ...outerScopes] = progressiveScope;
 
@@ -31,6 +31,7 @@ export const detoke = (input) => {
       const parsedInt = Number.parseInt(token, 10);
       return Number.isNaN(parsedInt) ? Symbol.for(token) : parsedInt;
     };
+
     switch (graphemeAtHand) {
       case "(": {
         const updatedCurrentScope = tokenSoFar.length > 0
@@ -45,9 +46,8 @@ export const detoke = (input) => {
         // console.log({ newProgressiveScope });
 
         return loop(
-          restOfGraphemes,
-          "",
           newProgressiveScope,
+          restOfGraphemes,
         );
       }
       case ")": {
@@ -67,7 +67,7 @@ export const detoke = (input) => {
         // console.log({ updatedCurrentScope });
         // console.log({ newProgressiveScope });
 
-        return loop(restOfGraphemes, "", newProgressiveScope);
+        return loop(newProgressiveScope, restOfGraphemes, "");
       }
       case " ": {
         const updatedCurrentScope = tokenSoFar.length > 0
@@ -83,21 +83,20 @@ export const detoke = (input) => {
         // console.log({ newProgressiveScope });
 
         return loop(
-          restOfGraphemes,
-          "",
           newProgressiveScope,
+          restOfGraphemes,
         );
       }
       default:
         return loop(
+          progressiveScope,
           restOfGraphemes,
           tokenSoFar + graphemeAtHand,
-          progressiveScope,
         );
     }
   };
 
-  return loop(graphemes);
+  return loop([[]], graphemes);
 };
 
 export const lookupFromEnv = (name, definitions) => {
