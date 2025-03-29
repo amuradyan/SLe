@@ -1,5 +1,5 @@
 import { assertEquals } from "@std/assert";
-import { definitions, dnevalni, lookupFromEnv } from "./slim.js";
+import { definitions, lookupFromEnv, run } from "./slim.js";
 import { assertAlmostEquals } from "@std/assert";
 
 Deno.test("slim snippets", async (t) => {
@@ -10,7 +10,7 @@ Deno.test("slim snippets", async (t) => {
         (luminance 10 10 10)
     `;
 
-      const result = dnevalni(code, definitions);
+      const result = run(code);
 
       assertAlmostEquals(result, 10);
     },
@@ -25,7 +25,7 @@ Deno.test("slim snippets", async (t) => {
         (average-brightness 10 40 10)
     `;
 
-      const result = dnevalni(code, definitions);
+      const result = run(code);
       assertAlmostEquals(result, 20);
     },
   });
@@ -35,7 +35,7 @@ Deno.test("slim snippets", async (t) => {
       (/ (+ 10 40 10) 3)
     `;
 
-    const result = dnevalni(code, definitions);
+    const result = run(code);
 
     assertAlmostEquals(result, 20);
   });
@@ -43,7 +43,7 @@ Deno.test("slim snippets", async (t) => {
   await t.step({
     name: "ITU-R BT.601 Luma Formula",
     fn() {
-      dnevalni(`
+      run(`
         (luma-formula 10 20 30)
       `);
     },
@@ -53,7 +53,7 @@ Deno.test("slim snippets", async (t) => {
   await t.step({
     name: "HSP Model (Human Sensitivity to Perceived Brightness)",
     fn() {
-      dnevalni(`
+      run(`
         (hsp-model 10 20 30)
       `);
     },

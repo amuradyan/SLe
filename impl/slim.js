@@ -11,38 +11,38 @@ export const detoke = (input) => {
     const [currentScope, parentScope, ...outerScopes] = progressiveScope;
 
     if (!graphemeAtHand) {
-      // console.log("End of input stream", progressiveScope);
-      // return tokenSoFar.length > 0
-      //   ? [...currentScope, tokenSoFar]
-      //   : currentScope;
       return currentScope;
     }
 
-    console.log({
-      event: "PROCESS_GRAPHEME",
-    });
-    console.log(
-      `Grapheme at : "${graphemeAtHand}" [${restOfGraphemes}]\n`,
-      `Token So far: "${tokenSoFar}"`,
-    );
-    console.log({ currentScope });
-    console.log({
-      parentScope,
-      outerScopes,
-    });
+    // console.log({
+    //   event: "PROCESS_GRAPHEME",
+    // });
+    // console.log(
+    //   `Grapheme at : "${graphemeAtHand}" [${restOfGraphemes}]\n`,
+    //   `Token So far: "${tokenSoFar}"`,
+    // );
+    // console.log({ currentScope });
+    // console.log({
+    //   parentScope,
+    //   outerScopes,
+    // });
 
+    const typeify = (token) => {
+      const parsedInt = Number.parseInt(token, 10);
+      return Number.isNaN(parsedInt) ? Symbol.for(token) : parsedInt;
+    };
     switch (graphemeAtHand) {
       case "(": {
         const updatedCurrentScope = tokenSoFar.length > 0
-          ? [...currentScope, tokenSoFar]
+          ? [...currentScope, typeify(tokenSoFar)]
           : currentScope;
 
         const newProgressiveScope = parentScope && parentScope.length > 0
           ? [[], updatedCurrentScope, parentScope, ...outerScopes]
           : [[], updatedCurrentScope, ...outerScopes];
 
-        console.log({ updatedCurrentScope });
-        console.log({ newProgressiveScope });
+        // console.log({ updatedCurrentScope });
+        // console.log({ newProgressiveScope });
 
         return loop(
           restOfGraphemes,
@@ -52,7 +52,7 @@ export const detoke = (input) => {
       }
       case ")": {
         const updatedCurrentScope = tokenSoFar.length > 0
-          ? [...currentScope, tokenSoFar]
+          ? [...currentScope, typeify(tokenSoFar)]
           : currentScope;
 
         const innerHead = parentScope && parentScope.length > 0
@@ -64,14 +64,14 @@ export const detoke = (input) => {
           ...outerScopes,
         ];
 
-        console.log({ updatedCurrentScope });
-        console.log({ newProgressiveScope });
+        // console.log({ updatedCurrentScope });
+        // console.log({ newProgressiveScope });
 
         return loop(restOfGraphemes, "", newProgressiveScope);
       }
       case " ": {
         const updatedCurrentScope = tokenSoFar.length > 0
-          ? [...currentScope, tokenSoFar]
+          ? [...currentScope, typeify(tokenSoFar)]
           : currentScope;
 
         const newProgressiveScope = [
@@ -80,7 +80,7 @@ export const detoke = (input) => {
           ...outerScopes,
         ];
 
-        console.log({ newProgressiveScope });
+        // console.log({ newProgressiveScope });
 
         return loop(
           restOfGraphemes,
@@ -97,16 +97,7 @@ export const detoke = (input) => {
     }
   };
 
-  // We assume that the expressions are of form (name number number number)
-  // We, now have to parse (name (name number number number))
-  const typeify = ([operator, ...rest]) => {
-    const args = rest.map((x) => Number.parseInt(x));
-    return [atom(operator), ...args];
-  };
-
-  const tokens = loop(graphemes);
-
-  return typeify(tokens);
+  return loop(graphemes);
 };
 
 export const lookupFromEnv = (name, definitions) => {
@@ -116,23 +107,38 @@ export const lookupFromEnv = (name, definitions) => {
   }
 };
 
+export const run = (program) => {
+  const programAsList = detoke(program);
+
+  console.log({ programAsList });
+
+  return dnevalni(programAsList, definitions);
+};
+
 export const dnevalni = (expression, definitions = []) => {
-  // + (/ 1 2 3)) []
+  if (typeof expression === "number") {
+    return expression;
+  }
 
-  const [noperator, ...noperands] = detoke(expression);
-  console.log({ noperator }, { noperands });
+  if (Array.isArray(expression)) {
+    const [noperator, ...noperands] = expression;
+    console.log({ noperator }, { noperands });
 
-  // -> [[+ [/ 1 2 3]]]
+    const compute = lookupFromEnv(noperator, definitions); // This will later grow into lookup
 
-  const compute = lookupFromEnv(noperator, definitions); // This will later grow into lookup
+    console.log({ definitions });
 
-  console.log({ definitions });
+    const evaluatedOperands = noperands.map((nexpression) =>
+      dnevalni(nexpression, definitions)
+    );
 
-  // [+ 1 2]
+    console.log({ evaluatedOperands });
 
-  // tokens: [+ [/ 1 2 3]]
-  // fn+ [1,1]
-  return compute(...noperands);
+    return compute(evaluatedOperands);
+  }
+
+  console.log({ expression });
+  console.log("Error: Unknown expression type.");
 };
 
 // word -> words, start from one go to many
@@ -148,14 +154,14 @@ export const definitions = [
   ],
   [
     atom("+"),
-    (...numbers) => {
+    (numbers) => {
       console.log({ numbers });
       return numbers.reduce((acc, number) => acc + number, 0);
     },
   ],
   [
     atom("/"),
-    (a, b) => a / b,
+    ([a, b]) => a / b,
   ],
 ];
 
