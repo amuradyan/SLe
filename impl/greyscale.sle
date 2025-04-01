@@ -23,6 +23,7 @@
             (map (lambda (pixel) (
                 (define pixel-coordinate (coordinate-of pixel))
                 (define pixel-color (color-of pixel))
+
                 (list pixel-coordinate
                       (greyscale-pixel (red pixel-color) (green pixel-color) (blue pixel-color)))
             )) bitmap)))
@@ -31,6 +32,7 @@
         (lambda (path)
             (define bitmap (read-bitmap path))
             (define greyscaled-bitmap (greyscale-bitmap bitmap))
+
             (write-bitmap greyscaled-bitmap "./greyscaled.bmp")))
 
     (greyscale "./nkar.bmp"))
