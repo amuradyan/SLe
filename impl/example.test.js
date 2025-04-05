@@ -1,5 +1,5 @@
 import { assertEquals } from "@std/assert";
-import { definitions, lookupFromEnv, run } from "./slim.js";
+import { dangerousDefinitions, lookupFromEnv, run } from "./slim.js";
 import { assertAlmostEquals } from "@std/assert";
 
 Deno.test("slim snippets", async (t) => {
@@ -74,8 +74,8 @@ Deno.test("slim snippets", async (t) => {
 Deno.test("definitions", async (t) => {
   await t.step("lookup", () => {
     assertEquals(
-      lookupFromEnv(definitions[0][0], definitions),
-      definitions[0][1],
+      lookupFromEnv(dangerousDefinitions[0][0], dangerousDefinitions),
+      dangerousDefinitions[0][1],
     );
   });
 });

@@ -1,5 +1,31 @@
 const atom = Symbol.for;
 
+export const dangerousDefinitions = [
+  [
+    atom("luminance"),
+    (red, green, blue) => 0.2126 * red + 0.7152 * green + 0.0722 * blue,
+  ],
+  [
+    atom("average-brightness"),
+    (red, green, blue) => (red + green + blue) / 3,
+  ],
+  [
+    atom("+"),
+    (numbers) => {
+      console.log({ numbers });
+      return numbers.reduce((acc, number) => acc + number, 0);
+    },
+  ],
+  [
+    atom("/"),
+    ([a, b]) => a / b,
+  ],
+  [
+    atom("a"),
+    10,
+  ],
+];
+
 export const detoke = (input) => {
   const graphemes = Array.from(input.trim());
 
@@ -106,7 +132,10 @@ export const lookupFromEnv = (name, definitions) => {
   }
 };
 
-export const run = (program) => {
+export const run = (
+  program,
+  definitions = dangerousDefinitions,
+) => {
   const programAsList = detoke(program);
 
   console.log({ programAsList });
@@ -146,37 +175,11 @@ export const dnevalni = (expression, definitions = []) => {
 
 // word -> words, start from one go to many
 
-export const definitions = [
-  [
-    atom("luminance"),
-    (red, green, blue) => 0.2126 * red + 0.7152 * green + 0.0722 * blue,
-  ],
-  [
-    atom("average-brightness"),
-    (red, green, blue) => (red + green + blue) / 3,
-  ],
-  [
-    atom("+"),
-    (numbers) => {
-      console.log({ numbers });
-      return numbers.reduce((acc, number) => acc + number, 0);
-    },
-  ],
-  [
-    atom("/"),
-    ([a, b]) => a / b,
-  ],
-  [
-    atom("a"),
-    10,
-  ],
-];
-
 // Learn more at https://docs.deno.com/runtime/manual/examples/module_metadata#concepts
 if (import.meta.main) {
   const [program] = Deno.args;
 
-  const result = dnevalni(program, definitions);
+  const result = dnevalni(program, dangerousDefinitions);
 
   console.table([{ program, result }], ["program", "result"]);
 }
