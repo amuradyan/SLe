@@ -1,0 +1,53 @@
+#!/usr/bin/env -S deno run --allow-read --allow-write --allow-run
+
+// cli.ts
+import { run } from "./slim.js";
+import { encodeWAV, environment } from "./sintez.js";
+
+// EXAMPLES:
+//   shvi melody.shvi output.wav     # Compile to WAV file
+//   shvi melody.shvi | aplay        # Pipe to audio player
+//   cat melody.shvi | shvi - | sox - output.mp3  # Convert to MP3
+
+async function main() {
+  // If no arguments, show usage
+  if (Deno.args.length === 0) {
+    console.log("Usage: shvi <input.shvi> [output.wav]");
+    Deno.exit(0);
+  }
+
+  // Get input file
+  const inputFile = Deno.args[0];
+  let sourceCode;
+
+  try {
+    sourceCode = await Deno.readTextFile(inputFile);
+  } catch (error) {
+    console.error(`Error reading file: ${error.message}`);
+    Deno.exit(1);
+  }
+
+  // Generate samples
+  const samples = run(sourceCode, environment);
+
+  // Determine output destination
+  if (Deno.args.length > 1) {
+    // Output to file
+    const outputFile = Deno.args[1];
+    encodeWAV(samples, outputFile);
+  } else {
+    encodeWAV(samples, "output.wav");
+
+    const process = new Deno.Command("aplay", {
+      args: ["output.wav"],
+      stdout: "inherit",
+      stderr: "inherit",
+    }).spawn();
+
+    await process.output();
+  }
+}
+
+if (import.meta.main) {
+  main();
+}
