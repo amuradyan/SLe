@@ -1,4 +1,4 @@
-import { encodeWAV, generatePCM } from "./generatePCM.js";
+import { encodeWAV, generatePCM } from "./sintez.js";
 
 const C4 = 261.63;
 const D4 = 293.66;
@@ -50,11 +50,8 @@ const birthdayPCM = sampleHappyBirthday(
   bassline,
   durationPerNote,
 );
-const birthdayBuffer = encodeWAV(birthdayPCM);
-await Deno.writeFile(
-  "happy_birthday_stereo.wav",
-  new Uint8Array(birthdayBuffer),
-);
+
+encodeWAV(birthdayPCM, "happy-birthday.wav");
 
 function renderOFortuna() {
   // deno-fmt-ignore

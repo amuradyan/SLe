@@ -129,6 +129,9 @@ export const lookupFromEnv = (name, definitions) => {
   const matchingDefinition = definitions.find(([key]) => key === name);
   if (matchingDefinition) {
     return matchingDefinition[1];
+  } else {
+    console.log("Error: Unknown ", name);
+    return null;
   }
 };
 
@@ -144,6 +147,8 @@ export const run = (
 };
 
 export const dnevalni = (expression, definitions = []) => {
+  console.log({ expression });
+
   if (typeof expression === "number") {
     return expression;
   }
@@ -166,7 +171,7 @@ export const dnevalni = (expression, definitions = []) => {
 
     console.log({ evaluatedOperands });
 
-    return compute(evaluatedOperands);
+    return compute(...evaluatedOperands);
   }
 
   console.log({ expression });
