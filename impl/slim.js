@@ -1,31 +1,3 @@
-const atom = Symbol.for;
-
-export const dangerousDefinitions = [
-  [
-    atom("luminance"),
-    (red, green, blue) => 0.2126 * red + 0.7152 * green + 0.0722 * blue,
-  ],
-  [
-    atom("average-brightness"),
-    (red, green, blue) => (red + green + blue) / 3,
-  ],
-  [
-    atom("+"),
-    (numbers) => {
-      console.log({ numbers });
-      return numbers.reduce((acc, number) => acc + number, 0);
-    },
-  ],
-  [
-    atom("/"),
-    ([a, b]) => a / b,
-  ],
-  [
-    atom("a"),
-    10,
-  ],
-];
-
 export const detoke = (input) => {
   const graphemes = Array.from(input.trim());
 
@@ -39,19 +11,6 @@ export const detoke = (input) => {
     if (!graphemeAtHand) {
       return currentScope;
     }
-
-    // console.log({
-    //   event: "PROCESS_GRAPHEME",
-    // });
-    // console.log(
-    //   `Grapheme at : "${graphemeAtHand}" [${restOfGraphemes}]\n`,
-    //   `Token So far: "${tokenSoFar}"`,
-    // );
-    // console.log({ currentScope });
-    // console.log({
-    //   parentScope,
-    //   outerScopes,
-    // });
 
     const typeify = (token) => {
       const parsedInt = Number.parseInt(token, 10);
@@ -67,9 +26,6 @@ export const detoke = (input) => {
         const newProgressiveScope = parentScope && parentScope.length > 0
           ? [[], updatedCurrentScope, parentScope, ...outerScopes]
           : [[], updatedCurrentScope, ...outerScopes];
-
-        // console.log({ updatedCurrentScope });
-        // console.log({ newProgressiveScope });
 
         return loop(
           newProgressiveScope,
@@ -141,13 +97,13 @@ export const run = (
 ) => {
   const programAsList = detoke(program);
 
-  console.log({ programAsList });
+  // console.log({ programAsList });
 
   return dnevalni(programAsList, definitions);
 };
 
 export const dnevalni = (expression, definitions = []) => {
-  console.log({ expression });
+  // console.log({ expression });
 
   if (typeof expression === "number") {
     return expression;
@@ -163,13 +119,13 @@ export const dnevalni = (expression, definitions = []) => {
 
     const compute = lookupFromEnv(noperator, definitions); // This will later grow into lookup
 
-    console.log({ definitions });
+    // console.log({ definitions });
 
     const evaluatedOperands = noperands.map((nexpression) =>
       dnevalni(nexpression, definitions)
     );
 
-    console.log({ evaluatedOperands });
+    // console.log({ evaluatedOperands });
 
     return compute(...evaluatedOperands);
   }
