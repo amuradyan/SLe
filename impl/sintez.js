@@ -1,54 +1,51 @@
 const AMPLITUDE = 32767;
-const SAMPLE_RATE = 1000;
-
+const SAMPLE_RATE = 44100;
 function generateAttack(frequency, fadeSamples, offset) {
-  console.log("Generating attack for frequency:", frequency);
-  function loop(i, acc) {
-    if (i >= fadeSamples) return acc;
+  // console.log("Generating attack for frequency:", frequency);
+
+  const samples = [];
+  for (let i = 0; i < fadeSamples; i++) {
     const t = (offset + i) / SAMPLE_RATE;
     const sample = AMPLITUDE * Math.sin(2 * Math.PI * frequency * t) *
       (i / fadeSamples);
-    return loop(i + 1, [...acc, sample]);
+    samples.push(sample);
   }
-  return loop(0, []);
+  return samples;
 }
 
 function generateSustain(frequency, numSamples, offset) {
-  console.log("Generating sustain for frequency:", frequency);
-  console.log({ offset }, { numSamples });
-  function loop(i, acc) {
-    if (i >= numSamples) return acc;
+  const samples = [];
+  for (let i = 0; i < numSamples; i++) {
     const t = (offset + i) / SAMPLE_RATE;
     const sample = AMPLITUDE * Math.sin(2 * Math.PI * frequency * t);
-    return loop(i + 1, [...acc, sample]);
+    samples.push(sample);
   }
-  return loop(0, []);
+  return samples;
 }
 
 function generateDecay(frequency, fadeSamples, offset) {
-  console.log("Generating decay for frequency:", frequency);
-  function loop(i, acc) {
-    if (i >= fadeSamples) return acc;
+  const samples = [];
+  for (let i = 0; i < fadeSamples; i++) {
     const t = (offset + i) / SAMPLE_RATE;
     const sample = AMPLITUDE * Math.sin(2 * Math.PI * frequency * t) *
       ((fadeSamples - i) / fadeSamples);
-    return loop(i + 1, [...acc, sample]);
+    samples.push(sample);
   }
-  return loop(0, []);
+  return samples;
 }
 
 export function generatePCM(frequency, duration, offset = 0) {
-  console.log("Generating PCM for frequency:", frequency);
+  // console.log("Generating PCM for frequency:", frequency);
 
   const numSamples = SAMPLE_RATE * duration;
   const fadeSamples = Math.floor(SAMPLE_RATE * 0.01); // 10ms fade
   const sustainSamples = numSamples - 2 * fadeSamples;
 
-  console.log("Number of samples:", numSamples);
-  console.log("Fade samples:", fadeSamples);
-  console.log("Sustain samples:", sustainSamples);
-  console.log("Offset:", offset);
-  console.log("Duration:", duration);
+  // console.log("Number of samples:", numSamples);
+  // console.log("Fade samples:", fadeSamples);
+  // console.log("Sustain samples:", sustainSamples);
+  // console.log("Offset:", offset);
+  // console.log("Duration:", duration);
 
   const attack = generateAttack(frequency, fadeSamples, offset);
   const sustain = generateSustain(
@@ -64,8 +61,6 @@ export function generatePCM(frequency, duration, offset = 0) {
 
   const samples = new Int16Array([...attack, ...sustain, ...decay]);
 
-  console.log("Generated PCM samples:", samples.length);
-
   return samples;
 }
 
@@ -80,12 +75,9 @@ export async function encodeWAV(
   const view = new DataView(buffer);
 
   const writeString = (offset, str) => {
-    function loop(i) {
-      if (i >= str.length) return;
+    for (let i = 0; i < str.length; i++) {
       view.setUint8(offset + i, str.charCodeAt(i));
-      loop(i + 1);
     }
-    loop(0);
   };
 
   writeString(0, "RIFF");
@@ -102,7 +94,7 @@ export async function encodeWAV(
   writeString(36, "data");
   view.setUint32(40, dataSize, true);
 
-  console.log("samples", samples.length);
+  // console.log("samples", samples.length);
 
   for (let i = 0; i < samples.length; i++) {
     view.setInt16(headerSize + i * 2, samples[i], true);

@@ -19,8 +19,6 @@ Deno.test("Playing things", async (t) => {
 
       const samples = run(music, environment);
 
-      console.log("Samples:", samples);
-
       encodeWAV(samples, "C4-for-2-seconds.wav");
 
       console.log("Playing generated WAV file...");
@@ -31,10 +29,6 @@ Deno.test("Playing things", async (t) => {
       }).spawn();
 
       await process.output();
-
-      fail(
-        "This test is not implemented yet. Please implement it.",
-      );
     },
   });
 });
