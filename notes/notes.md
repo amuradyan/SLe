@@ -61,13 +61,31 @@ The next logical step for environment would be to introduce bindings along with 
 
 ATM, we are playing around with color and filters, trying to greyscale a BPM for example. I am thinking we should also look into music.
 
-(attack 0.1)
-(decay 0.1)
-(sustain 0.5)
-(release 0.1)
+    (attack 0.1)
+    (decay 0.1)
+    (sustain 0.5)
+    (release 0.1)
 
-(pitch C4 0.5)
+    (pitch C4 0.5)
 
-(join
- (left (fade C4 C4 D4 C4 F4 E4))
- (right C3 C3 G3 C3 F3 C3))
+    (join
+    (left (fade C4 C4 D4 C4 F4 E4))
+    (right C3 C3 G3 C3 F3 C3))
+
+    (stereo
+        (harmony
+            (chord C4 E4 G4)
+            (chord C4 E4 G4)
+            (chord C4 E4 G4)
+            (chord C4 E4 G4)))
+        (harmony
+            (chord C4 E4 G4)
+            (chord C4 E4 G4)
+            (chord C4 E4 G4)
+            (chord C4 E4 G4))
+
+    (chord A4 C5 E5)
+    (scale C4 0.5)
+    (tone C4 0.5)
+    (define pnduk tone)
+    (pnduk (harmony C4 E4 G4) 8)
