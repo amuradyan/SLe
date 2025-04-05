@@ -51,7 +51,8 @@ export const detoke = (input) => {
 
         return loop(newProgressiveScope, restOfGraphemes, "");
       }
-      case " ": {
+      case " ":
+      case "\n": {
         const updatedCurrentScope = tokenSoFar.length > 0
           ? [...currentScope, typeify(tokenSoFar)]
           : currentScope;
@@ -97,8 +98,6 @@ export const run = (
 ) => {
   const programAsList = detoke(program);
 
-  // console.log({ programAsList });
-
   return dnevalni(programAsList, definitions);
 };
 
@@ -117,7 +116,8 @@ export const dnevalni = (expression, definitions = []) => {
     const [noperator, ...noperands] = expression;
     console.log({ noperator }, { noperands });
 
-    const compute = lookupFromEnv(noperator, definitions); // This will later grow into lookup
+    const compute = lookupFromEnv(noperator, definitions);
+    console.log({ compute }); // This will later grow into lookup
 
     // console.log({ definitions });
 

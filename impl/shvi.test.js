@@ -12,6 +12,7 @@ const environment = [
   [atom("tone"), (frequency, duration) => generatePCM(frequency, duration)],
   [atom("sequence"), (...args) => {
     const samples = [];
+    // console.log({ args });
     for (const arg of args) {
       samples.push(...arg);
     }
@@ -137,7 +138,7 @@ Deno.test("Playing things", async (t) => {
 
       await process.output();
     },
-    // ignore: true,
+    ignore: true,
   });
 
   await t.step({
