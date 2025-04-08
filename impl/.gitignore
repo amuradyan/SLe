@@ -1,2 +1,6 @@
 deno.lock
 misc.md
+**/.clj-kondo
+**/.lsp
+
+*.wav
