@@ -1,0 +1,8 @@
+(sequence
+  (tone E3 1500) (silence 500)
+  (tone E3 500) (silence 200)
+  (tone G3 500) (silence 300)
+  (tone E3 500) (silence 300)
+  (tone D3 500) (silence 200)
+  (tone C3 1500) (silence 500)
+  (tone B2 1500))
