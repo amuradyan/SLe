@@ -1,3 +1,5 @@
+import { log } from "./logger.js";
+
 export const detoke = (input) => {
   const graphemes = Array.from(input.trim());
 
@@ -46,8 +48,8 @@ export const detoke = (input) => {
           ...outerScopes,
         ];
 
-        // console.log({ updatedCurrentScope });
-        // console.log({ newProgressiveScope });
+        log.debug({ updatedCurrentScope });
+        log.debug({ newProgressiveScope });
 
         return loop(newProgressiveScope, restOfGraphemes, "");
       }
@@ -63,7 +65,7 @@ export const detoke = (input) => {
           ...outerScopes,
         ];
 
-        // console.log({ newProgressiveScope });
+        log.debug({ newProgressiveScope });
 
         return loop(
           newProgressiveScope,
@@ -87,7 +89,7 @@ export const lookupFromEnv = (name, definitions) => {
   if (matchingDefinition) {
     return matchingDefinition[1];
   } else {
-    console.log("Error: Unknown ", name);
+    log.debug("Error: Unknown ", name);
     return null;
   }
 };
@@ -102,7 +104,7 @@ export const run = (
 };
 
 export const dnevalni = (expression, definitions = []) => {
-  // console.log({ expression });
+  log.debug({ expression });
 
   if (typeof expression === "number") {
     return expression;
@@ -114,24 +116,24 @@ export const dnevalni = (expression, definitions = []) => {
 
   if (Array.isArray(expression)) {
     const [noperator, ...noperands] = expression;
-    console.log({ noperator }, { noperands });
+    log.debug({ noperator }, { noperands });
 
     const compute = lookupFromEnv(noperator, definitions);
-    console.log({ compute });
+    log.debug({ compute });
 
-    // console.log({ definitions });
+    log.debug({ definitions });
 
     const evaluatedOperands = noperands.map((nexpression) =>
       dnevalni(nexpression, definitions)
     );
 
-    // console.log({ evaluatedOperands });
+    log.debug({ evaluatedOperands });
 
     return compute(...evaluatedOperands);
   }
 
-  console.log({ expression });
-  console.log("Error: Unknown expression type.");
+  log.debug({ expression });
+  log.debug("Error: Unknown expression type.");
 };
 
 // word -> words, start from one go to many

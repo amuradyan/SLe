@@ -1,6 +1,6 @@
-import { fail } from "@std/assert/fail";
-import { run } from "./slim.js";
-import { encodeWAV, generatePCM } from "./sintez.js";
+import { run } from "../src/slim.js";
+import { encodeWAV, generatePCM } from "../src/sintez.js";
+import { log } from "../src/logger.js";
 
 const atom = Symbol.for;
 
@@ -12,7 +12,6 @@ const environment = [
   [atom("tone"), (frequency, duration) => generatePCM(frequency, duration)],
   [atom("sequence"), (...args) => {
     const samples = [];
-    // console.log({ args });
     for (const arg of args) {
       samples.push(...arg);
     }
@@ -77,7 +76,7 @@ Deno.test("Playing things", async (t) => {
 
       encodeWAV(samples, outputFile);
 
-      console.log("Playing generated WAV file...");
+      log.debug("Playing generated WAV file...");
       const process = new Deno.Command("aplay", {
         args: [outputFile],
         stdout: "inherit",
@@ -103,7 +102,7 @@ Deno.test("Playing things", async (t) => {
 
       encodeWAV(samples, outputFile);
 
-      console.log("Playing generated WAV file...");
+      log.debug("Playing generated WAV file...");
       const process = new Deno.Command("aplay", {
         args: [outputFile],
         stdout: "inherit",
@@ -112,7 +111,7 @@ Deno.test("Playing things", async (t) => {
 
       await process.output();
     },
-    ignore: true,
+    ignore: false,
   });
 
   await t.step({
@@ -121,15 +120,13 @@ Deno.test("Playing things", async (t) => {
       const inputFile = "./fixtures/twinkle-twinkle.shvi";
       const sourceCode = await Deno.readTextFile(inputFile);
 
-      console.log({ sourceCode });
-
       const samples = run(sourceCode, environment);
 
       const outputFile = "twinkle-twinkle.wav";
 
       encodeWAV(samples, outputFile);
 
-      console.log("Playing generated WAV file...");
+      log.debug("Playing generated WAV file...");
       const process = new Deno.Command("aplay", {
         args: [outputFile],
         stdout: "inherit",
@@ -148,14 +145,14 @@ Deno.test("Playing things", async (t) => {
       const outputFile = "F4-C4-G4-for-2-seconds.wav";
 
       const music = `
-                  (sequence (tone F4 0.5) (tone silence 1.5) (tone C4 2.5) (tone G4 1.5))
+                  (sequence (tone F4 500) (tone silence 1500) (tone C4 2500) (tone G4 1500))
               `;
 
       const samples = run(music, environment);
 
       encodeWAV(samples, outputFile);
 
-      console.log("Playing generated WAV file...");
+      log.debug("Playing generated WAV file...");
       const process = new Deno.Command("aplay", {
         args: [outputFile],
         stdout: "inherit",

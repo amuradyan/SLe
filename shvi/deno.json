@@ -3,7 +3,8 @@
     "dev": "deno run --watch slim.js"
   },
   "imports": {
-    "@std/assert": "jsr:@std/assert@1"
+    "@std/assert": "jsr:@std/assert@1",
+    "@std/log": "jsr:@std/log@^0.224.14"
   },
   "lock": true
 }
