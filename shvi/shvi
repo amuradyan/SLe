@@ -10,13 +10,11 @@ import { encodeWAV, environment } from "./sintez.js";
 //   cat melody.shvi | shvi - | sox - output.mp3  # Convert to MP3
 
 async function main() {
-  // If no arguments, show usage
   if (Deno.args.length === 0) {
     console.log("Usage: shvi <input.shvi> [output.wav]");
     Deno.exit(0);
   }
 
-  // Get input file
   const inputFile = Deno.args[0];
   let sourceCode;
 
@@ -27,12 +25,9 @@ async function main() {
     Deno.exit(1);
   }
 
-  // Generate samples
   const samples = run(sourceCode, environment);
 
-  // Determine output destination
   if (Deno.args.length > 1) {
-    // Output to file
     const outputFile = Deno.args[1];
     encodeWAV(samples, outputFile);
   } else {

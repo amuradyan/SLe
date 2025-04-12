@@ -121,7 +121,6 @@ export const environment = [
     }
     return samples;
   }],
-  // [atom("chord"), ([notes], duration) => {}]
 
   // Notes - Octave 1 (Very Low)
   [atom("C1"), 32.70],
@@ -193,6 +192,20 @@ export const environment = [
   [atom("A#5"), 932.33],
   [atom("B5"), 987.77],
 
+  // Notes - Octave 6 (High)
+  [atom("G#6"), 1661.22],
+  [atom("A6"), 1760.00],
+  [atom("A#6"), 1864.66],
+  [atom("B6"), 1975.53],
+  [atom("C6"), 1046.50],
+  [atom("C#6"), 1108.73],
+  [atom("D6"), 1174.66],
+  [atom("D#6"), 1244.51],
+  [atom("E6"), 1318.51],
+  [atom("F6"), 1396.91],
+  [atom("F#6"), 1479.98],
+  [atom("G6"), 1567.98],
+
   // Aliases for flats (for musical convenience)
   [atom("Db1"), 34.65],
   [atom("Eb1"), 38.89],
@@ -219,22 +232,6 @@ export const environment = [
   [atom("Gb5"), 739.99],
   [atom("Ab5"), 830.61],
   [atom("Bb5"), 932.33],
-
-  // High notes
-  [atom("G#6"), 1661.22],
-  [atom("A6"), 1760.00],
-  [atom("A#6"), 1864.66],
-  [atom("F6"), 1396.91],
-  [atom("F#6"), 1479.98],
-  [atom("E6"), 1318.51],
-  [atom("D#6"), 1244.51],
-  [atom("C#6"), 1108.73],
-
-  // Medium-high notes
-  [atom("B5"), 987.77],
-  [atom("A5"), 880.00],
-  [atom("G#5"), 830.61],
-
   // Common instrument presets (for better sound)
   [atom("piano"), {
     waveform: "triangle",

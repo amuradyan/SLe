@@ -117,7 +117,7 @@ export const dnevalni = (expression, definitions = []) => {
     console.log({ noperator }, { noperands });
 
     const compute = lookupFromEnv(noperator, definitions);
-    console.log({ compute }); // This will later grow into lookup
+    console.log({ compute });
 
     // console.log({ definitions });
 
@@ -136,7 +136,6 @@ export const dnevalni = (expression, definitions = []) => {
 
 // word -> words, start from one go to many
 
-// Learn more at https://docs.deno.com/runtime/manual/examples/module_metadata#concepts
 if (import.meta.main) {
   const [program] = Deno.args;
 
