@@ -1,8 +1,8 @@
 #!/usr/bin/env -S deno run --allow-read --allow-write --allow-run
 
 // cli.ts
-import { run } from "./slim.js";
-import { encodeWAV, environment } from "./sintez.js";
+import { run } from "./engine/src/slim.js";
+import { encodeWAV, environment } from "./engine/src/sintez.js";
 
 // EXAMPLES:
 //   shvi melody.shvi output.wav     # Compile to WAV file
