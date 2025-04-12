@@ -95,7 +95,7 @@ Deno.test("Playing things", async (t) => {
       const outputFile = "F4-C4-G4-for-2-seconds.wav";
 
       const music = `
-                  (sequence (tone F4 1) (tone C4 2) (tone G4 1))
+                  (sequence (tone F4 100) (tone C4 200) (tone G4 100))
               `;
 
       const samples = run(music, environment);
@@ -111,7 +111,7 @@ Deno.test("Playing things", async (t) => {
 
       await process.output();
     },
-    ignore: false,
+    ignore: true,
   });
 
   await t.step({

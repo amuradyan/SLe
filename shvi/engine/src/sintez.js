@@ -28,12 +28,14 @@ function generateSustain(frequency, numSamples, offset) {
 
 function generateDecay(frequency, fadeSamples, offset) {
   const samples = [];
+
   for (let i = 0; i < fadeSamples; i++) {
     const t = (offset + i) / SAMPLE_RATE;
     const sample = AMPLITUDE * Math.sin(2 * Math.PI * frequency * t) *
       ((fadeSamples - i) / fadeSamples);
     samples.push(sample);
   }
+
   return samples;
 }
 

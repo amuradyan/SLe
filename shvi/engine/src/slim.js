@@ -1,6 +1,6 @@
 import { log } from "./logger.js";
 
-export const detoke = (input) => {
+export const tokenize = (input) => {
   const graphemes = Array.from(input.trim());
 
   const loop = (
@@ -98,12 +98,12 @@ export const run = (
   program,
   definitions = dangerousDefinitions,
 ) => {
-  const programAsList = detoke(program);
+  const programAsList = tokenize(program);
 
-  return dnevalni(programAsList, definitions);
+  return evaluate(programAsList, definitions);
 };
 
-export const dnevalni = (expression, definitions = []) => {
+export const evaluate = (expression, definitions = []) => {
   log.debug({ expression });
 
   if (typeof expression === "number") {
@@ -123,8 +123,8 @@ export const dnevalni = (expression, definitions = []) => {
 
     log.debug({ definitions });
 
-    const evaluatedOperands = noperands.map((nexpression) =>
-      dnevalni(nexpression, definitions)
+    const evaluatedOperands = noperands.map((expression) =>
+      evaluate(expression, definitions)
     );
 
     log.debug({ evaluatedOperands });
@@ -141,7 +141,7 @@ export const dnevalni = (expression, definitions = []) => {
 if (import.meta.main) {
   const [program] = Deno.args;
 
-  const result = dnevalni(program, dangerousDefinitions);
+  const result = evaluate(program, dangerousDefinitions);
 
   console.table([{ program, result }], ["program", "result"]);
 }
