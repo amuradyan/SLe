@@ -21,7 +21,11 @@ async function main() {
   try {
     sourceCode = await Deno.readTextFile(inputFile);
   } catch (error) {
-    console.error(`Error reading file: ${error.message}`);
+    if (error instanceof Error) {
+      console.error(`Error reading file: ${error.message}`);
+    } else {
+      console.error("Error reading file: Unknown error");
+    }
     Deno.exit(1);
   }
 
