@@ -89,3 +89,7 @@ ATM, we are playing around with color and filters, trying to greyscale a BPM for
     (tone C4 0.5)
     (define pnduk tone)
     (pnduk (harmony C4 E4 G4) 8)
+
+--------------
+
+Start with where we are going. Demonstrate shvi with tone, sequence and parallel and define it as a checkpoint. Start, from the scratch, reach the checkpoint and then go wherever it takes you.
