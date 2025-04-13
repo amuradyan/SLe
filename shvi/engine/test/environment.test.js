@@ -8,6 +8,14 @@ Deno.test("Environment", async (t) => {
   ];
 
   await t.step({
+    name: "lookup takes into account the prelude",
+    fn: () => {
+      const result = environmentLookup(Symbol.for("C4"), env);
+      assertEquals(result, 261.63);
+    },
+  });
+
+  await t.step({
     name: "lookup a value by its name",
     fn: () => {
       const result = environmentLookup(Symbol.for("a"), env);

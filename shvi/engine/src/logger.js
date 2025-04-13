@@ -1,3 +1,5 @@
+export { log, setupLogging };
+
 const logLevels = {
   DEBUG: "DEBUG",
   ERROR: "ERROR",
@@ -28,5 +30,3 @@ const log = {
 };
 
 setupLogging(false);
-
-export { log, setupLogging };
