@@ -103,4 +103,29 @@ Deno.test("Playing things", async (t) => {
     },
     ignore: true,
   });
+
+  await t.step({
+    name: "play C4 and F4 at the same time for 2 seconds",
+    fn: async () => {
+      const outputFile = "C4-F4-for-2-seconds.wav";
+
+      const music = `
+                  (parallel (tone C4 2000) (tone F4 2000))
+              `;
+
+      const samples = run(music);
+
+      encodeWAV(samples, outputFile);
+
+      log.debug("Playing generated WAV file...");
+      const process = new Deno.Command("aplay", {
+        args: [outputFile],
+        stdout: "inherit",
+        stderr: "inherit",
+      }).spawn();
+
+      await process.output();
+    },
+    ignore: true,
+  });
 });

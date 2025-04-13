@@ -1,0 +1,11 @@
+(sequence
+    (silence 1000)
+    (parallel (tone G3 300) (tone Eb3 300))
+    (parallel (tone G3 300) (tone Eb3 300))
+    (parallel (tone G3 300) (tone Eb3 300))
+    (parallel (tone Eb3 2000) (tone G2 2000))
+    (silence 600)
+    (parallel (tone F3 300) (tone B2 300))
+    (parallel (tone F3 300) (tone B2 300))
+    (parallel (tone F3 300) (tone B2 300))
+    (parallel (tone D3 2000) (tone G2 2000)))

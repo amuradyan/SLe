@@ -161,6 +161,19 @@ const prelude = [
     }
     return samples;
   }],
+  [atom("parallel"), (...args) => {
+    const samples = [];
+    const maxLength = Math.max(...args.map((arg) => arg.length));
+    for (let i = 0; i < maxLength; i++) {
+      const samplesAtI = args.map((arg) => arg[i] || 0);
+      const averageSample = samplesAtI.reduce((acc, sample) =>
+        acc + sample, 0) /
+        samplesAtI.length;
+
+      samples.push(averageSample);
+    }
+    return samples;
+  }],
 
   // Notes - Octave 1 (Very Low)
   [atom("C1"), 32.70],
