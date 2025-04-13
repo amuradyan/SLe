@@ -1,8 +1,8 @@
 #!/usr/bin/env -S deno run --allow-read --allow-write --allow-run
 
 // cli.ts
-import { run } from "./engine/src/slim.js";
-import { encodeWAV, environment } from "./engine/src/sintez.js";
+import { run } from "./engine/src/shvi.js";
+import { encodeWAV } from "./engine/src/sintez.js";
 
 // EXAMPLES:
 //   shvi melody.shvi output.wav     # Compile to WAV file
@@ -29,7 +29,7 @@ async function main() {
     Deno.exit(1);
   }
 
-  const samples = run(sourceCode, environment);
+  const samples = run(sourceCode);
 
   if (Deno.args.length > 1) {
     const outputFile = Deno.args[1];
