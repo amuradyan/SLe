@@ -10,14 +10,16 @@ export const tokenize = (input) => {
   ) => {
     const [currentScope, parentScope, ...outerScopes] = progressiveScope;
 
-    if (!graphemeAtHand) {
-      return currentScope;
-    }
-
     const typeify = (token) => {
       const parsedInt = Number.parseInt(token, 10);
       return Number.isNaN(parsedInt) ? Symbol.for(token) : parsedInt;
     };
+
+    if (!graphemeAtHand) {
+      return tokenSoFar.length > 0
+        ? [...currentScope, typeify(tokenSoFar)]
+        : currentScope;
+    }
 
     switch (graphemeAtHand) {
       case "(": {
@@ -54,6 +56,7 @@ export const tokenize = (input) => {
         return loop(newProgressiveScope, restOfGraphemes, "");
       }
       case " ":
+      case "\t":
       case "\n": {
         const updatedCurrentScope = tokenSoFar.length > 0
           ? [...currentScope, typeify(tokenSoFar)]
