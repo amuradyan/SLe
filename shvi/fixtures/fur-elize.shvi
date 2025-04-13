@@ -41,5 +41,4 @@
   (tone C5 250)
   (silence 350)
   (tone E4 350) (tone E5 350) (tone D#5 350) (tone E5 350) (tone D#5 350) (tone E5 350) (tone B4 350) (tone D5 350) (tone C5 350)
-  (tone A4 250)
-)
+  (tone A4 250))
