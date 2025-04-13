@@ -87,13 +87,16 @@ export const tokenize = (input) => {
   return loop([[]], graphemes);
 };
 
-export const lookupFromEnv = (name, definitions) => {
+export const environmentLookup = (name, definitions) => {
   const matchingDefinition = definitions.find(([key]) => key === name);
   if (matchingDefinition) {
     return matchingDefinition[1];
   } else {
-    console.error("🪈 |Shvi| Error: Unknown name `", name, "`");
-    return null;
+    const errorMessage = `🪈 |Shvi| Error: Unknown name ....... \`${
+      Symbol.keyFor(name)
+    }\``;
+    console.error();
+    return errorMessage;
   }
 };
 
@@ -105,14 +108,14 @@ export const evaluate = (expression, definitions = []) => {
   }
 
   if (typeof expression === "symbol") {
-    return lookupFromEnv(expression, definitions);
+    return environmentLookup(expression, definitions);
   }
 
   if (Array.isArray(expression)) {
     const [operator, ...operands] = expression;
     log.debug({ operator }, { operands });
 
-    const compute = lookupFromEnv(operator, definitions);
+    const compute = environmentLookup(operator, definitions);
     log.debug({ compute });
 
     log.debug({ definitions });
