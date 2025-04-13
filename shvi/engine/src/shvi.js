@@ -138,11 +138,3 @@ export const run = (
 
   return evaluate(programAsList, definitions);
 };
-
-if (import.meta.main) {
-  const [program] = Deno.args;
-
-  const result = evaluate(program, dangerousDefinitions);
-
-  console.table([{ program, result }], ["program", "result"]);
-}
