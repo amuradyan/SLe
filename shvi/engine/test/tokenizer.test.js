@@ -3,6 +3,14 @@ import { assertEquals } from "@std/assert";
 
 Deno.test("Tokenizer", async (t) => {
   await t.step({
+    name: "no input is an empty list",
+    fn: () => {
+      const result = tokenize("");
+      assertEquals(result, []);
+    },
+  });
+
+  await t.step({
     name: "tokenize a number",
     fn: () => {
       const result = tokenize("1");
