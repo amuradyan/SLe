@@ -89,18 +89,9 @@ export const lookupFromEnv = (name, definitions) => {
   if (matchingDefinition) {
     return matchingDefinition[1];
   } else {
-    log.debug("Error: Unknown ", name);
+    console.error("🪈 |Shvi| Error: Unknown name `", name, "`");
     return null;
   }
-};
-
-export const run = (
-  program,
-  definitions = dangerousDefinitions,
-) => {
-  const programAsList = tokenize(program);
-
-  return evaluate(programAsList, definitions);
 };
 
 export const evaluate = (expression, definitions = []) => {
@@ -115,15 +106,15 @@ export const evaluate = (expression, definitions = []) => {
   }
 
   if (Array.isArray(expression)) {
-    const [noperator, ...noperands] = expression;
-    log.debug({ noperator }, { noperands });
+    const [operator, ...operands] = expression;
+    log.debug({ operator }, { operands });
 
-    const compute = lookupFromEnv(noperator, definitions);
+    const compute = lookupFromEnv(operator, definitions);
     log.debug({ compute });
 
     log.debug({ definitions });
 
-    const evaluatedOperands = noperands.map((expression) =>
+    const evaluatedOperands = operands.map((expression) =>
       evaluate(expression, definitions)
     );
 
@@ -136,7 +127,14 @@ export const evaluate = (expression, definitions = []) => {
   log.debug("Error: Unknown expression type.");
 };
 
-// word -> words, start from one go to many
+export const run = (
+  program,
+  definitions = dangerousDefinitions,
+) => {
+  const programAsList = tokenize(program);
+
+  return evaluate(programAsList, definitions);
+};
 
 if (import.meta.main) {
   const [program] = Deno.args;

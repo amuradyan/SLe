@@ -1,4 +1,4 @@
-import { run } from "../src/slim.js";
+import { run } from "../src/shvi.js";
 import { encodeWAV, generatePCM } from "../src/sintez.js";
 import { log } from "../src/logger.js";
 
