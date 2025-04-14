@@ -14,11 +14,11 @@
 
   ;  Up               a-            bove          the
   (tone G4 500) (tone G4 500) (tone F4 500) (tone F4 500)
-  ;  world           so           high
+  ;  world            so            high
   (tone E4 500) (tone E4 500) (tone D4 1000)
-  ;  Like             a-            dia-         mond
+  ;  Like             a-            dia-          mond
   (tone G4 500) (tone G4 500) (tone F4 500) (tone F4 500)
-  ;  in             the           sky
+  ;  in               the           sky
   (tone E4 500) (tone E4 500) (tone D4 1000)
 
   (silence 500)
