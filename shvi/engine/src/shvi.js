@@ -58,6 +58,23 @@ const tokenize = (input) => {
 
         return loop(newProgressiveScope, restOfGraphemes, "");
       }
+      case ";": {
+        const newlineIndex = restOfGraphemes.indexOf("\n");
+
+        if (newlineIndex === -1) {
+          return loop(
+            progressiveScope,
+            [],
+            tokenSoFar,
+          );
+        }
+
+        return loop(
+          progressiveScope,
+          restOfGraphemes.slice(newlineIndex + 1),
+          tokenSoFar,
+        );
+      }
       case " ":
       case "\t":
       case "\n": {

@@ -49,4 +49,12 @@ Deno.test("Tokenizer", async (t) => {
       assertEquals(result, [Symbol.for("a"), 1, [Symbol.for("b"), 2]]);
     },
   });
+
+  await t.step({
+    name: "ignore line comments",
+    fn: () => {
+      const result = tokenize("1 ; this is a comment\n");
+      assertEquals(result, [1]);
+    },
+  });
 });
