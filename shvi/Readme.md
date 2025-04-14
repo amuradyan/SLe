@@ -2,7 +2,7 @@
 
 Shvi is a tool to write music. The notation is inspired by Lisp, and the language is designed to be simple and extensible.
 
-Below is the passage from _Still Dre_, from [here](fixtures/still-dre.shvi):
+Below is the [passage from _Still Dre_](fixtures/still-dre.shvi)
 
 ```lisp
 (sequence
@@ -23,6 +23,21 @@ Below is the passage from _Still Dre_, from [here](fixtures/still-dre.shvi):
   (silence 90)
   (tone C4 70) (tone E4 100) (tone A4 360)
   (silence 90))
+```
+and the "da da da DUMMMM" from [Beethovens' 5th](fixtures/beethovens-5th.shvi)
+
+```lisp
+(sequence
+    (silence 1000)
+    (parallel (tone G3 300) (tone Eb3 300))
+    (parallel (tone G3 300) (tone Eb3 300))
+    (parallel (tone G3 300) (tone Eb3 300))
+    (parallel (tone Eb3 2000) (tone G2 2000))
+    (silence 600)
+    (parallel (tone F3 300) (tone B2 300))
+    (parallel (tone F3 300) (tone B2 300))
+    (parallel (tone F3 300) (tone B2 300))
+    (parallel (tone D3 2000) (tone G2 2000)))
 ```
 
 Shvi defines sounds as a combination of a pitch and duration with `tone` and combines the sounds with `sequence` and `parallel`.
