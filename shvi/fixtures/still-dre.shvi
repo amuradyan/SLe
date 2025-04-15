@@ -1,5 +1,18 @@
 (sequence
   (silence 1000)
+
+  ;; (loop 7
+  ;;   (tone C4 70) (tone E4 100) (tone A4 360)
+  ;;   (silence 90))
+
+  ;; (loop 3
+  ;;   (tone B3 72) (tone E4 100) (tone A4 360)
+  ;;   (silence 90))
+
+  ;; (loop 5
+  ;;   (tone B3 72) (tone E4 100) (tone G4 360)
+  ;;   (silence 90))
+
   (tone C4 70) (tone E4 100) (tone A4 360)
   (silence 90)
   (tone C4 70) (tone E4 100) (tone A4 360)
@@ -15,4 +28,21 @@
   (tone C4 70) (tone E4 100) (tone A4 360)
   (silence 90)
   (tone C4 70) (tone E4 100) (tone A4 360)
-  (silence 90))
+  (silence 90)
+
+  (tone B3 72) (tone E4 100) (tone A4 360)
+  (silence 90)
+  (tone B3 72) (tone E4 100) (tone A4 360)
+  (silence 90)
+  (tone B3 72) (tone E4 100) (tone A4 360)
+  (silence 90)
+
+  (tone B3 72) (tone E4 100) (tone G4 360)
+  (silence 90)
+  (tone B3 72) (tone E4 100) (tone G4 360)
+  (silence 90)
+  (tone B3 72) (tone E4 100) (tone G4 360)
+  (silence 90)
+  (tone B3 72) (tone E4 100) (tone G4 360)
+  (silence 90)
+  (tone B3 72) (tone E4 100) (tone G4 360))
