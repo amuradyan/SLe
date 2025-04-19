@@ -174,7 +174,9 @@ const prelude = [
   [atom("sequence"), (...args) => {
     const samples = [];
     for (const arg of args) {
-      samples.push(...arg);
+      for (const x of arg) {
+        samples.push(x);
+      }
     }
     return samples;
   }],
