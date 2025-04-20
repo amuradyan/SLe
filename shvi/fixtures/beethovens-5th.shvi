@@ -4,11 +4,11 @@
     (parallel (tone G3 300) (tone Eb3 300))   ; da
     (parallel (tone G3 300) (tone Eb3 300))   ; da
     (parallel (tone G3 300) (tone Eb3 300))   ; da
-    (parallel (tone Eb3 2000) (tone G2 2000)) ; DUMMMM
+    (parallel (tone Eb3 1500) (tone G2 1500)) ; DUMMMM
 
     (silence 600)
 
     (parallel (tone F3 300) (tone B2 300))    ; da
     (parallel (tone F3 300) (tone B2 300))    ; da
     (parallel (tone F3 300) (tone B2 300))    ; da
-    (parallel (tone D3 2000) (tone G2 2000))) ; DUMMMM
+    (parallel (tone D3 1500) (tone G2 1500))) ; DUMMMM
