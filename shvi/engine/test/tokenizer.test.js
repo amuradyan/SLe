@@ -38,15 +38,18 @@ Deno.test("Tokenizer", async (t) => {
     name: "tokenize a list",
     fn: () => {
       const result = tokenize("(a 1)");
-      assertEquals(result, [Symbol.for("a"), 1]);
+      assertEquals(result, [[Symbol.for("a"), 1]]);
     },
   });
 
   await t.step({
     name: "tokenize a nested list",
     fn: () => {
-      const result = tokenize("(a 1 (b 2))");
-      assertEquals(result, [Symbol.for("a"), 1, [Symbol.for("b"), 2]]);
+      const result = tokenize("((a (f t)) (b))");
+      assertEquals(result, [[
+        [Symbol.for("a"), [Symbol.for("f"), Symbol.for("t")]],
+        [Symbol.for("b")],
+      ]]);
     },
   });
 

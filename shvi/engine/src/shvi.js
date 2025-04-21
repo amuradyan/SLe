@@ -30,7 +30,7 @@ const tokenize = (input) => {
           ? [...currentScope, typeify(tokenSoFar)]
           : currentScope;
 
-        const newProgressiveScope = parentScope && parentScope.length > 0
+        const newProgressiveScope = parentScope
           ? [[], updatedCurrentScope, parentScope, ...outerScopes]
           : [[], updatedCurrentScope, ...outerScopes];
 
@@ -44,7 +44,7 @@ const tokenize = (input) => {
           ? [...currentScope, typeify(tokenSoFar)]
           : currentScope;
 
-        const innerHead = parentScope && parentScope.length > 0
+        const innerHead = parentScope
           ? [...parentScope, updatedCurrentScope]
           : updatedCurrentScope;
 
