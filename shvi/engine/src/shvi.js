@@ -1,6 +1,5 @@
 export { environmentLookup, evaluate, run, tokenize };
 
-import { log } from "./logger.js";
 import { generatePCM } from "./sintez.js";
 
 const tokenize = (input) => {
@@ -53,9 +52,6 @@ const tokenize = (input) => {
           ...outerScopes,
         ];
 
-        log.debug({ updatedCurrentScope });
-        log.debug({ newProgressiveScope });
-
         return loop(newProgressiveScope, restOfGraphemes, "");
       }
       case ";": {
@@ -87,8 +83,6 @@ const tokenize = (input) => {
           parentScope,
           ...outerScopes,
         ];
-
-        log.debug({ newProgressiveScope });
 
         return loop(
           newProgressiveScope,
@@ -136,7 +130,6 @@ const evaluate = (expression, definitions = []) => {
 
   if (Array.isArray(expression)) {
     const [operator, ...operands] = expression;
-    log.debug({ operator }, { operands });
 
     const compute = environmentLookup(operator, definitions);
     log.debug({ compute });

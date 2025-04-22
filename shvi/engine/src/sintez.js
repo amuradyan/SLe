@@ -6,8 +6,6 @@ const AMPLITUDE = 32767;
 const SAMPLE_RATE = 44100;
 
 function generateAttack(frequency, fadeSamples, offset) {
-  log.debug("Generating attack for frequency:", frequency);
-
   const samples = [];
   for (let i = 0; i < fadeSamples; i++) {
     const t = (offset + i) / SAMPLE_RATE;
@@ -42,8 +40,6 @@ function generateDecay(frequency, fadeSamples, offset) {
 }
 
 function generatePCM(frequency, duration, offset = 0) {
-  log.debug("Generating PCM for frequency:", frequency);
-
   const numSamples = Math.floor(SAMPLE_RATE * (duration / 1000));
   const fadeSamples = Math.floor(SAMPLE_RATE * 0.01); // 10ms fade
   const sustainSamples = numSamples - 2 * fadeSamples;
@@ -94,8 +90,6 @@ async function encodeWAV(
   view.setUint16(34, 16, true);
   writeString(36, "data");
   view.setUint32(40, dataSize, true);
-
-  log.debug("samples", samples.length);
 
   for (let i = 0; i < samples.length; i++) {
     view.setInt16(headerSize + i * 2, samples[i], true);

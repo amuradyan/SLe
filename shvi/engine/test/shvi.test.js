@@ -16,7 +16,7 @@ Deno.test("Playing things", async (t) => {
 
       encodeWAV(samples, outputFile);
 
-      log.debug("Playing generated WAV file...");
+      log.info("Playing generated WAV file...");
       const process = new Deno.Command("aplay", {
         args: [outputFile],
         stdout: "inherit",
@@ -42,7 +42,7 @@ Deno.test("Playing things", async (t) => {
 
       encodeWAV(samples, outputFile);
 
-      log.debug("Playing generated WAV file...");
+      log.info("Playing generated WAV file...");
       const process = new Deno.Command("aplay", {
         args: [outputFile],
         stdout: "inherit",
@@ -66,7 +66,7 @@ Deno.test("Playing things", async (t) => {
 
       encodeWAV(samples, outputFile);
 
-      log.debug("Playing generated WAV file...");
+      log.info("Playing generated WAV file...");
       const process = new Deno.Command("aplay", {
         args: [outputFile],
         stdout: "inherit",
@@ -117,7 +117,7 @@ Deno.test("Playing things", async (t) => {
 
       encodeWAV(samples, outputFile);
 
-      log.debug("Playing generated WAV file...");
+      log.info("Playing generated WAV file...");
       const process = new Deno.Command("aplay", {
         args: [outputFile],
         stdout: "inherit",

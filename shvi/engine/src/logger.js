@@ -16,7 +16,7 @@ const logger = {
     if (level === logLevels.DEBUG && currentLogLevel === logLevels.ERROR) {
       return;
     }
-    console.log(`${level} ${msg}`);
+    console.log(level, msg);
   },
 };
 
