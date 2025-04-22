@@ -1,48 +1,27 @@
+(define first-phrase
+  (sequence
+    (tone C4 70) (tone E4 100) (tone A4 360)
+    (silence 90)))
+
+(define second-phrase
+  (sequence
+    (tone B3 72) (tone E4 100) (tone A4 360)
+    (silence 90)))
+
+(define third-phrase
+  (sequence
+    (tone B3 72) (tone E4 100) (tone G4 360)
+    (silence 90)))
+
 (sequence
   (silence 1000)
 
-  ;; (loop 7
-  ;;   (tone C4 70) (tone E4 100) (tone A4 360)
-  ;;   (silence 90))
+  first-phrase first-phrase
+  first-phrase first-phrase
+  first-phrase first-phrase
+  first-phrase first-phrase
 
-  ;; (loop 3
-  ;;   (tone B3 72) (tone E4 100) (tone A4 360)
-  ;;   (silence 90))
+  second-phrase second-phrase second-phrase
 
-  ;; (loop 5
-  ;;   (tone B3 72) (tone E4 100) (tone G4 360)
-  ;;   (silence 90))
-
-  (tone C4 70) (tone E4 100) (tone A4 360)
-  (silence 90)
-  (tone C4 70) (tone E4 100) (tone A4 360)
-  (silence 90)
-  (tone C4 70) (tone E4 100) (tone A4 360)
-  (silence 90)
-  (tone C4 70) (tone E4 100) (tone A4 360)
-  (silence 90)
-  (tone C4 70) (tone E4 100) (tone A4 360)
-  (silence 90)
-  (tone C4 70) (tone E4 100) (tone A4 360)
-  (silence 90)
-  (tone C4 70) (tone E4 100) (tone A4 360)
-  (silence 90)
-  (tone C4 70) (tone E4 100) (tone A4 360)
-  (silence 90)
-
-  (tone B3 72) (tone E4 100) (tone A4 360)
-  (silence 90)
-  (tone B3 72) (tone E4 100) (tone A4 360)
-  (silence 90)
-  (tone B3 72) (tone E4 100) (tone A4 360)
-  (silence 90)
-
-  (tone B3 72) (tone E4 100) (tone G4 360)
-  (silence 90)
-  (tone B3 72) (tone E4 100) (tone G4 360)
-  (silence 90)
-  (tone B3 72) (tone E4 100) (tone G4 360)
-  (silence 90)
-  (tone B3 72) (tone E4 100) (tone G4 360)
-  (silence 90)
-  (tone B3 72) (tone E4 100) (tone G4 360))
+  third-phrase third-phrase
+  third-phrase third-phrase third-phrase)
