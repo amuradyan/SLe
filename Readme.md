@@ -12,10 +12,18 @@ Each part is introduced incrementally, allowing room to test, break, and extend 
 
 ## Repo structure
 
+### Training ground
+
 - `ts/` - JavaScript exercises designed to get comfortable with the tools and patterns we’ll rely on later—particularly array manipulation, function application, and recursion.
 
-- `racket/` - A short detour into Lisp using Racket. Helps build intuition around symbolic expressions, evaluation, and code as data.
+- `racket/` - A short detour into Lisp using Racket. Helps build intuition around the syntax and semantics of the language we’ll be implementing.
 
-- `fixtures/` - Test cases and examples used throughout the course. These serve as checkpoints and inspiration for expanding the language.
+### [Shvi](./shvi/)
 
-- [`shvi/`](./shvi/) - Shvi is the tool, that we'll construct throughout the course. It is a lisp-like language for generating sound.
+Shvi is the tool, that we'll be building throughout the course. It is a lisp-like language for generating sound.
+
+- [`shvi/fixtures/`](./shvi/fixtures/) - Test cases and examples used throughout the course. These serve as checkpoints and inspiration for expanding the language.
+
+------
+
+The course is inspired by [The Little Schemer](https://mitpress.mit.edu/9780262560997/the-little-schemer/) and [Crafting Interpreters](https://craftinginterpreters.com/). The goal is to build a simple model step by step—and use it to generate music.

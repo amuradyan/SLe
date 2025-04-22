@@ -2,42 +2,30 @@
 
 Shvi is a tool to write music. The notation is inspired by Lisp, and the language is designed to be simple and extensible.
 
-Below is the [passage from _Still Dre_](fixtures/still-dre.shvi)
+Below is the epic beat from [Still D.R.E.](fixtures/still-dre.shvi) by Dr. Dre and Snoop Dogg played three times
 
 ```lisp
-(sequence
-  (silence 500)
+(define first-phrase
+  (sequence
+    (tone C4 80) (tone E4 130) (tone A4 360)))
 
-  ;  Twin-            kle,          twin-         kle,
-  (tone C4 500) (tone C4 500) (tone G4 500) (tone G4 500)
-  ;  Lit-             tle           star
-  (tone A4 500) (tone A4 500) (tone G4 1000)
-  ;  How              I             won-          der
-  (tone F4 500) (tone F4 500) (tone E4 500) (tone E4 500)
-  ;  what             you           are
-  (tone D4 500) (tone D4 500) (tone C4 1000)
+(define second-phrase
+  (sequence
+    (tone B3 80) (tone E4 130) (tone A4 360)))
 
-  (silence 500)
+(define third-phrase
+  (sequence
+    (tone B3 80) (tone E4 130) (tone G4 360)))
 
-  ;  Up               a-            bove          the
-  (tone G4 500) (tone G4 500) (tone F4 500) (tone F4 500)
-  ;  world            so            high
-  (tone E4 500) (tone E4 500) (tone D4 1000)
-  ;  Like             a-            dia-          mond
-  (tone G4 500) (tone G4 500) (tone F4 500) (tone F4 500)
-  ;  in               the           sky
-  (tone E4 500) (tone E4 500) (tone D4 1000)
+(define the-beat
+  (sequence
+      (repeat 8 first-phrase)
+      (repeat 3 second-phrase)
+      (repeat 5 third-phrase)))
 
-  (silence 500)
+(define thrice 3)
 
-  ;  Twin-            kle,          twin-         kle,
-  (tone C4 500) (tone C4 500) (tone G4 500) (tone G4 500)
-  ;  Lit-             tle           star
-  (tone A4 500) (tone A4 500) (tone G4 1000)
-  ;  How              I             won-          der
-  (tone F4 500) (tone F4 500) (tone E4 500) (tone E4 500)
-  ;  what             you           are
-  (tone D4 500) (tone D4 500) (tone C4 1000))
+(repeat thrice the-beat)
 ```
 
 and the "da da da DUMMMM" from [Beethovens' 5th](fixtures/beethovens-5th.shvi)
@@ -63,13 +51,13 @@ Shvi defines sounds as a combination of a pitch and duration with `tone` and com
 
 ## Using Shvi
 
-To use it, you can pass it a `*.shvi` file and it will generate a `.wav` file with the sound and play it
+To use it, you can pass it a `*.shvi` file and it will generate an `output.wav` file with the sound and play it.
 
 ```bash
 ./shvi.sh fixtures/still-dre.shvi
 ```
 
- or pass it an output file and it will generate a the wave file.
+You can also pass it the output file like this:
 
 ```bash
 ./shvi.sh fixtures/still-dre.shvi still-dre.wav
@@ -81,7 +69,7 @@ To use it, you can pass it a `*.shvi` file and it will generate a `.wav` file wi
 
 It consists of the following components:
 
-* Tokenizer – breaks input strings into s-expression tokens
+* Tokenizer – breaks input strings into [s-expression](https://en.wikipedia.org/wiki/S-expression) tokens
 * Evaluator – recursively processes expressions
-* Environment – manages bindings and lexical scopes
+* Environment – manages bindings, holds the prelude
 * Sintez – a JavaScript engine responsible for generating sound waves and writing audio files
