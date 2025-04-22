@@ -92,7 +92,43 @@ Deno.test("Playing things", async (t) => {
 
       encodeWAV(samples, outputFile);
 
-      log.debug("Playing generated WAV file...");
+      log.info("Playing generated WAV file...");
+      const process = new Deno.Command("aplay", {
+        args: [outputFile],
+        stdout: "inherit",
+        stderr: "inherit",
+      }).spawn();
+
+      await process.output();
+    },
+    ignore: true,
+  });
+
+  await t.step({
+    name: "give names to pitches and passages",
+    fn: async () => {
+      const outputFile = "define.wav";
+
+      const music = `
+                (define pitch 300)
+                (define another-pitch 600)
+                (define end-pitch 900)
+
+                (define passage
+                  (sequence
+                    (tone pitch 1000)
+                    (tone another-pitch 1000)))
+
+                (sequence
+                  passage
+                  (tone end-pitch 1000))
+                    `;
+
+      const samples = run(music);
+
+      encodeWAV(samples, outputFile);
+
+      log.info("Playing generated WAV file...");
       const process = new Deno.Command("aplay", {
         args: [outputFile],
         stdout: "inherit",

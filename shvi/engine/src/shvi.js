@@ -109,17 +109,20 @@ const environmentLookup = (name, definitions) => {
   if (matchingDefinition) {
     return matchingDefinition[1];
   } else {
-    const errorMessage = `🪈 |Shvi| Error: Unknown name ....... \`${
+    const errorMessage = `🪈 Error: Unknown name ....... \`${
       Symbol.keyFor(name)
     }\``;
-    console.error();
+    console.error(errorMessage);
     return errorMessage;
   }
 };
 
-const evaluate = (expression, definitions = []) => {
-  log.debug({ expression });
+const updateEnvironment = (name, value, definitions) => [
+  [name, value],
+  ...definitions,
+];
 
+const evaluate = (expression, definitions = []) => {
   if (typeof expression === "number") {
     return expression;
   }
@@ -131,22 +134,32 @@ const evaluate = (expression, definitions = []) => {
   if (Array.isArray(expression)) {
     const [operator, ...operands] = expression;
 
-    const compute = environmentLookup(operator, definitions);
-    log.debug({ compute });
+    if (Array.isArray(operator) && operator[0] === atom("define")) {
+      const [_, name, value] = operator;
 
-    log.debug({ definitions });
+      const evaluatedValue = evaluate(value, definitions);
 
-    const evaluatedOperands = operands.map((expression) =>
-      evaluate(expression, definitions)
-    );
+      const newEnvironment = updateEnvironment(
+        name,
+        evaluatedValue,
+        definitions,
+      );
 
-    log.debug({ evaluatedOperands });
+      if (operands.length === 1) {
+        return evaluate(operands[0], newEnvironment);
+      } else {
+        return evaluate(operands, newEnvironment);
+      }
+    } else {
+      const compute = environmentLookup(operator, definitions);
 
-    return compute(...evaluatedOperands);
+      const evaluatedOperands = operands.map((expression) =>
+        evaluate(expression, definitions)
+      );
+
+      return compute(...evaluatedOperands);
+    }
   }
-
-  log.debug({ expression });
-  log.debug("Error: Unknown expression type.");
 };
 
 const run = (

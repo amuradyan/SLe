@@ -27,7 +27,7 @@ Deno.test("Environment", async (t) => {
     name: "Report accordingly, it the value is not found",
     fn: () => {
       const result = environmentLookup(Symbol.for("c"), env);
-      assertEquals(result, "🪈 |Shvi| Error: Unknown name ....... \`c\`");
+      assertEquals(result, "🪈 Error: Unknown name ....... \`c\`");
     },
   });
 });
