@@ -177,6 +177,15 @@ const prelude = [
   // Core functions
   [atom("silence"), (duration) => generatePCM(0, duration)],
   [atom("tone"), (frequency, duration) => generatePCM(frequency, duration)],
+  [atom("repeat"), (times, sequence) => {
+    const samples = [];
+    for (let i = 0; i < times; i++) {
+      for (const x of sequence) {
+        samples.push(x);
+      }
+    }
+    return samples;
+  }],
   [atom("sequence"), (...args) => {
     const samples = [];
     for (const arg of args) {
