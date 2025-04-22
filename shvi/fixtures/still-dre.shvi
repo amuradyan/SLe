@@ -1,25 +1,21 @@
 (define first-phrase
   (sequence
-    (tone C4 70) (tone E4 100) (tone A4 360)
-    (silence 90)))
+    (tone C4 80) (tone E4 130) (tone A4 360)))
 
 (define second-phrase
   (sequence
-    (tone B3 72) (tone E4 100) (tone A4 360)
-    (silence 90)))
+    (tone B3 80) (tone E4 130) (tone A4 360)))
 
 (define third-phrase
   (sequence
-    (tone B3 72) (tone E4 100) (tone G4 360)
-    (silence 90)))
+    (tone B3 80) (tone E4 130) (tone G4 360)))
 
-;; Still D.R.E. by Dr. Dre and Snoop Dogg
-
-(sequence
-  (silence 1000)
-
-  (repeat 3
-    (sequence
+(define the-beat
+  (sequence
       (repeat 8 first-phrase)
       (repeat 3 second-phrase)
-      (repeat 5 third-phrase))))
+      (repeat 5 third-phrase)))
+
+(define thrice 3)
+
+(repeat thrice the-beat)
