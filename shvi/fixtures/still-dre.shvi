@@ -13,15 +13,13 @@
     (tone B3 72) (tone E4 100) (tone G4 360)
     (silence 90)))
 
+;; Still D.R.E. by Dr. Dre and Snoop Dogg
+
 (sequence
   (silence 1000)
 
-  first-phrase first-phrase
-  first-phrase first-phrase
-  first-phrase first-phrase
-  first-phrase first-phrase
-
-  second-phrase second-phrase second-phrase
-
-  third-phrase third-phrase
-  third-phrase third-phrase third-phrase)
+  (repeat 3
+    (sequence
+      (repeat 8 first-phrase)
+      (repeat 3 second-phrase)
+      (repeat 5 third-phrase))))
