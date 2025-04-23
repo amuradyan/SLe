@@ -168,7 +168,11 @@ const run = (
 ) => {
   const programAsList = tokenize(program);
 
-  return evaluate(programAsList, definitions);
+  if (programAsList.length === 1) {
+    return evaluate(programAsList[0], definitions);
+  } else {
+    return evaluate(programAsList, definitions);
+  }
 };
 
 const atom = Symbol.for;
