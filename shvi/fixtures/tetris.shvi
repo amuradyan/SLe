@@ -1,0 +1,5 @@
+(sequence
+  (tone E4 250) (tone B3 250) (tone C4 250) (tone D4 250)
+  (tone C4 125) (tone B3 125) (tone A3 250) (tone A3 250)
+  (tone C4 250) (tone E4 250) (tone D4 125) (tone C4 125)
+  (tone B3 500))
