@@ -6,7 +6,8 @@ import { encodeWAV } from "./engine/src/sintez.js";
 
 // EXAMPLES:
 //   shvi melody.shvi output.wav     # Compile to WAV file
-//   shvi melody.shvi | aplay        # Pipe to audio player
+//   shvi melody.shvi | aplay        # Pipe to audio player (Linux)
+//   shvi melody.shvi | afplay       # Pipe to audio player (macOS)
 //   cat melody.shvi | shvi - | sox - output.mp3  # Convert to MP3
 
 async function main() {
@@ -37,7 +38,11 @@ async function main() {
   } else {
     encodeWAV(samples, "output.wav");
 
-    const process = new Deno.Command("aplay", {
+    // Check if we're on macOS
+    const isMac = Deno.build.os === "darwin";
+    const playCommand = isMac ? "afplay" : "aplay";
+    
+    const process = new Deno.Command(playCommand, {
       args: ["output.wav"],
       stdout: "inherit",
       stderr: "inherit",
