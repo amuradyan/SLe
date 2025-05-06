@@ -1,7 +1,19 @@
-export { encodeWAV, generatePCM };
+export { encodeWAV, generatePCM, tokenize };
 
 function generatePCM(frequency, duration) {
-  throw new Error("Not implemented");
+  const amplitude = 32767;
+  const sampleRate = 44100;
+
+  const numSamples = Math.floor(sampleRate * (duration / 1000));
+
+  const samples = [];
+  for (let i = 0; i < numSamples; i++) {
+    const t = i / sampleRate;
+    const sample = amplitude * Math.sin(2 * Math.PI * frequency * t);
+    samples.push(sample);
+  }
+
+  return samples;
 }
 
 async function encodeWAV(
@@ -43,3 +55,7 @@ async function encodeWAV(
     new Uint8Array(buffer),
   );
 }
+
+const tokenize = (input) => {
+  throw new Error("Not implemented");
+};
