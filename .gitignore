@@ -1,5 +1,9 @@
-.vscode
 *.code-workspace
 
-**/gaya*
 sandbox.*
+
+deno.lock
+**/.clj-kondo
+**/.lsp
+
+*.wav
