@@ -1,0 +1,36 @@
+(sequence
+  (silence 500)
+
+  ; MORTAL KOMBAT!
+  (tone C5 250) (tone E5 250) (tone G5 500)
+
+  (silence 250)
+
+  ; Main hook rhythm (approximate melody line)
+  (tone C5 250) (tone D#5 250) (tone F5 250) (tone G5 250)
+  (tone C6 500)
+
+  (tone G5 250) (tone F5 250) (tone D#5 250) (tone F5 250)
+  (tone G5 500)
+
+  (tone C5 250) (tone D#5 250) (tone F5 250) (tone G5 250)
+  (tone C6 500)
+
+  (tone G5 250) (tone F5 250) (tone D#5 250) (tone F5 250)
+  (tone G5 500)
+
+  (silence 500)
+
+  ; Repeat the hook
+  (tone C5 250) (tone D#5 250) (tone F5 250) (tone G5 250)
+  (tone C6 500)
+
+  (tone G5 250) (tone F5 250) (tone D#5 250) (tone F5 250)
+  (tone G5 500)
+
+  (tone C5 250) (tone D#5 250) (tone F5 250) (tone G5 250)
+  (tone C6 500)
+
+  (tone G5 250) (tone F5 250) (tone D#5 250) (tone F5 250)
+  (tone G5 500)
+)

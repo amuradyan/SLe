@@ -1,0 +1,6 @@
+(sequence
+  (tone E5 125) (tone E5 125) (tone 0 125) (tone E5 125)
+  (tone 0 125) (tone C5 125) (tone E5 125) (tone G5 500)
+  (tone 0 500)
+  (tone G4 125) (tone 0 125) (tone C5 125) (tone 0 125)
+  (tone E4 125) (tone 0 125) (tone A4 125) (tone B4 125) (tone Bb4 125) (tone A4 125))
