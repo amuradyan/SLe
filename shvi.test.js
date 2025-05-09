@@ -1,5 +1,28 @@
 import { encodeWAV, generatePCM } from "./sintez.js";
 
+const determinePlayer = (filePath) => {
+  switch (Deno.build.os) {
+    case "darwin":
+      return ["afplay", [filePath]];
+    case "windows":
+      return ["powershell", ["-c", "Start-Process", filePath]];
+    default:
+      return ["aplay", [filePath]];
+  }
+};
+
+const play = async (filePath) => {
+  const [player, args] = determinePlayer(filePath);
+
+  const process = new Deno.Command(player, {
+    args,
+    stdout: "inherit",
+    stderr: "inherit",
+  }).spawn();
+
+  await process.output();
+};
+
 Deno.test("Playing things", async (t) => {
   await t.step({
     name: "playing 261.63 Hz /C4/ for one second",
@@ -12,13 +35,7 @@ Deno.test("Playing things", async (t) => {
       encodeWAV(samples);
 
       console.log("Playing generated WAV file...");
-      const process = new Deno.Command("aplay", {
-        args: ["output.wav"],
-        stdout: "inherit",
-        stderr: "inherit",
-      }).spawn();
-
-      await process.output();
+      await play("output.wav");
     },
     ignore: false,
   });
