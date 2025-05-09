@@ -12,9 +12,7 @@ Once you have the repo in your machine, open it with VS code. It will suggest a 
 
 The line above should run successfully. Keep it running in the background, as it will watch for changes in the code and run the tests automatically as you move through the steps.
 
-Congratulations! You are now ready to start working on the project.
-
-Go on, move [step one] and start on the task.
+Now you are now ready to start working on the project. Go on, move [step one] and start on the task.
 
     git checkout 01-making-a-sound
 
