@@ -64,6 +64,8 @@ async function encodeWAV(
   );
 }
 
+const atom = (name) => Symbol.for(name);
+
 const tokenize = (input) => {
   throw new Error("Not implemented");
 };

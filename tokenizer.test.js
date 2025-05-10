@@ -1,5 +1,7 @@
 import { tokenize } from "./sintez.js";
-import { assertEquals } from "jsr:@std/assert";
+import { assertEquals, fail } from "jsr:@std/assert";
+
+const atom = (name) => Symbol.for(name);
 
 Deno.test("Tokenizer", async (t) => {
   await t.step({
@@ -22,7 +24,7 @@ Deno.test("Tokenizer", async (t) => {
     name: "tokenize a symbol",
     fn: () => {
       const result = tokenize("fifa");
-      assertEquals(result, [Symbol.for("fifa")]);
+      assertEquals(result, [atom("fifa")]);
     },
   });
 
@@ -30,7 +32,16 @@ Deno.test("Tokenizer", async (t) => {
     name: "regard spaces as delimiters",
     fn: () => {
       const result = tokenize("fifa 2002");
-      assertEquals(result, [Symbol.for("fifa"), 2002]);
+      assertEquals(result, [atom("fifa"), 2002]);
+    },
+  });
+
+  await t.step({
+    name: "tokenize Shvi code",
+    fn: () => {
+      const result = tokenize("tone 261.63 1000");
+
+      fail("Write down the correct assertion and make it pass");
     },
   });
 });
