@@ -1,4 +1,4 @@
-import { encodeWAV, generatePCM } from "./sintez.js";
+import { encodeWAV, evaluate, generatePCM, tokenize } from "./sintez.js";
 
 const determinePlayer = (filePath) => {
   switch (Deno.build.os) {
@@ -38,5 +38,23 @@ Deno.test("Playing things", async (t) => {
       await play("output.wav");
     },
     ignore: true,
+  });
+
+  await t.step({
+    name: "playing a D4 for two seconds",
+    fn: async () => {
+      const music = `
+            (tone 293.66 200)
+          `;
+
+      const tokens = tokenize(music);
+      const samples = evaluate(tokens[0]);
+
+      encodeWAV(samples);
+
+      console.log("Playing generated WAV file...");
+      await play("output.wav");
+    },
+    ignore: false,
   });
 });
