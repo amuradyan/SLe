@@ -11,3 +11,5 @@ Words are separated by spaces, hence, when parsing a sentence, we'll take the ch
 You will start with a number of failing tests in [`tokenizer.test.js`](../tokenizer.test.js) that try to tokenize a string input. The goal is to make the tests pass by implementing a simple parser.
 
 To turn a string into an array of characters, we can use the [`Array.from`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from), and to create atoms we can use the [`Symbol.for`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/for).
+
+Once the tests pass, you can move on to the [next step](03-using-a-dictionary.md), where we'll be forming a dictionary.
