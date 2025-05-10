@@ -1,4 +1,4 @@
-export { encodeWAV, generatePCM, tokenize };
+export { encodeWAV, generatePCM, tokenize, typeify };
 
 // sample[n]= A ⋅ sin(2 * π * f * (n / R)​)
 
@@ -66,6 +66,58 @@ async function encodeWAV(
 
 const atom = (name) => Symbol.for(name);
 
+const typeify = (token) => {
+  const number = Number.parseFloat(token, 10);
+  return Number.isNaN(number) ? atom(token) : number;
+};
+
 const tokenize = (input) => {
+  const graphemes = Array.from(input.trim());
+
+  const loop = (
+    currentScope,
+    [graphemeAtHand, ...restOfGraphemes],
+    tokenSoFar = "",
+  ) => {
+    if (!graphemeAtHand) {
+      return tokenSoFar.length > 0
+        ? [...currentScope, typeify(tokenSoFar)]
+        : currentScope;
+    }
+
+    switch (graphemeAtHand) {
+      case " ": {
+        const updatedCurrentScope = tokenSoFar.length > 0
+          ? [...currentScope, typeify(tokenSoFar)]
+          : currentScope;
+
+        return loop(
+          updatedCurrentScope,
+          restOfGraphemes,
+        );
+      }
+      default:
+        return loop(
+          currentScope,
+          restOfGraphemes,
+          tokenSoFar + graphemeAtHand,
+        );
+    }
+  };
+
+  return loop([], graphemes);
+};
+
+const evaluate = (expression, definitions = []) => {
   throw new Error("Not implemented");
+};
+
+const run = (
+  program,
+  definitions = [],
+) => {
+  const tokens = tokenize(program);
+  const value = evaluate(tokens, definitions);
+
+  return value;
 };
