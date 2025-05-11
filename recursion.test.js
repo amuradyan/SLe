@@ -1,31 +1,50 @@
-import { assertEquals } from "jsr:@std/assert";
+import { assertEquals, fail } from "jsr:@std/assert";
 
 Deno.test("Recursion", async (t) => {
   await t.step({
     name: "reverse capitalize a string",
     fn: () => {
+      // If the string is empty, return an empty string
+      // If the first character is uppercase
+      //  make it lowercase and add it to the result
+      // If the first character is lowercase
+      //  make it uppercase and add it to the result
+      // Move to the next character and repeat the process
+      // When all the characters are checked, return the result
+
       const reverseCapitalize = (str) => {
         const loop = (str, acc) => {
-          throw new Error("Not implemented");
+          if (str.length === 0) {
+            return acc;
+          }
+          const [first, ...rest] = str;
+
+          fail(
+            "You need to implement the logic to reverse the capitalization",
+          );
         };
 
         return loop(str, "");
       };
 
-      const result = reverseCapitalize("BetTeR SafE ThaN SoRry");
-      assertEquals(result, "bETtEr sAFe tHaN sOrrY");
+      const generalResult = reverseCapitalize("BetTeR SafE ThaN SoRry");
+      const emptyStringResult = reverseCapitalize("");
+      assertEquals(generalResult, "bETtEr sAFe tHAn sOrRY");
+      assertEquals(emptyStringResult, "");
     },
   });
 
   await t.step({
     name: "find the maximum value in a list",
     fn: () => {
-      const max = (numbers) => {
-        const loop = (numbers, maxValue) => {
-          throw new Error("Not implemented");
-        };
+      // If the list is empty, return -Infinity
+      // Assume the first element in the list is the maximum
+      //  and compare it with the rest of the elements
+      // Once the current max is smaller than the next element, replace it with the latter
+      // When all the elements are checked, return the maximum value
 
-        return loop(numbers, -Infinity);
+      const max = (numbers) => {
+        throw new Error("Not implemented");
       };
 
       const maxOfEmptyList = max([]);
@@ -41,12 +60,25 @@ Deno.test("Recursion", async (t) => {
   await t.step({
     name: "remove substrings from a string",
     fn: () => {
+      // If the substring or the string are empty, return the string
+      // Move through the characters two by two
+      // If the first character is not the first character of the substring
+      //  Add it to the result and move to the next character of the string
+      // If the first character is the first character of the substring
+      //  Check if the next character is the second character of the substring
+      //  If it is, skip both characters
+      //  If it is not, add the first character to the result and move to the next character of the string
+
       const strip = (str, substr) => {
         throw new Error("Not implemented");
       };
 
-      const result = strip("Skies are grey in Greece", "re");
-      assertEquals(result, "Skies a gy in Gece");
+      const generalResult = strip("Skies are grey in Greece", "re");
+      const emptyStringResult = strip("", "re");
+      const emptySubstringResult = strip("Skies are grey in Greece", "");
+      assertEquals(generalResult, "Skies a gy in Gece");
+      assertEquals(emptySubstringResult, "Skies a gy in Gece");
+      assertEquals(emptyStringResult, "");
     },
   });
 });
