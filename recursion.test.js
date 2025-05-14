@@ -2,6 +2,26 @@ import { assertEquals, fail } from "jsr:@std/assert";
 
 Deno.test("Recursion", async (t) => {
   await t.step({
+    name: "find the nth Fibonacci number",
+    fn: () => {
+      // If n is 0, return 0
+      // If n is 1, return 1
+      // Otherwise, return the sum of the previous two Fibonacci numbers
+
+      const fibonacci = (n) => {
+        throw new Error("Not implemented");
+      };
+
+      const generalResult = fibonacci(5);
+      const zeroResult = fibonacci(0);
+      const oneResult = fibonacci(1);
+      assertEquals(generalResult, 5);
+      assertEquals(zeroResult, 0);
+      assertEquals(oneResult, 1);
+    },
+  });
+
+  await t.step({
     name: "reverse capitalize a string",
     fn: () => {
       // If the string is empty, return an empty string
@@ -79,6 +99,25 @@ Deno.test("Recursion", async (t) => {
       assertEquals(generalResult, "Skies a gy in Gece");
       assertEquals(emptySubstringResult, "Skies a gy in Gece");
       assertEquals(emptyStringResult, "");
+    },
+  });
+
+  await t.step({
+    name: "flatten a nested array",
+    fn: () => {
+      // If the array is empty, return an empty array
+      // If the first element is an array, flatten it and add it to the result
+      // If the first element is not an array, add it to the result
+      // Move to the next element and repeat the process
+
+      const flatten = (arr) => {
+        throw new Error("Not implemented");
+      };
+
+      const generalResult = flatten([1, [2, 3], [4, [5]]]);
+      const emptyArrayResult = flatten([]);
+      assertEquals(generalResult, [1, 2, 3, 4, 5]);
+      assertEquals(emptyArrayResult, []);
     },
   });
 });
