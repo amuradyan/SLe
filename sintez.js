@@ -64,11 +64,12 @@ async function encodeWAV(
   );
 }
 
-const atom = (name) => Symbol.for(name);
-
 const typeify = (token) => {
-  throw new Error("Not implemented");
+  const parsedNumber = Number.parseFloat(token, 10);
+  return Number.isNaN(parsedNumber) ? Symbol.for(token) : parsedNumber;
 };
+
+const atom = (name) => Symbol.for(name);
 
 const tokenize = (input) => {
   const graphemes = Array.from(input.trim());
@@ -78,17 +79,90 @@ const tokenize = (input) => {
     [graphemeAtHand, ...restOfGraphemes],
     tokenSoFar = "",
   ) => {
-    throw new Error("Not implemented");
+    const [currentScope, parentScope, ...outerScopes] = progressiveScope;
+
+    if (!graphemeAtHand) {
+      return tokenSoFar.length > 0
+        ? [...currentScope, typeify(tokenSoFar)]
+        : currentScope;
+    }
+
+    switch (graphemeAtHand) {
+      case "(": {
+        const updatedCurrentScope = tokenSoFar.length > 0
+          ? [...currentScope, typeify(tokenSoFar)]
+          : currentScope;
+
+        const newProgressiveScope = parentScope
+          ? [[], updatedCurrentScope, parentScope, ...outerScopes]
+          : [[], updatedCurrentScope, ...outerScopes];
+
+        return loop(
+          newProgressiveScope,
+          restOfGraphemes,
+        );
+      }
+      case ")": {
+        const updatedCurrentScope = tokenSoFar.length > 0
+          ? [...currentScope, typeify(tokenSoFar)]
+          : currentScope;
+
+        const innerHead = parentScope
+          ? [...parentScope, updatedCurrentScope]
+          : updatedCurrentScope;
+
+        const newProgressiveScope = [
+          innerHead,
+          ...outerScopes,
+        ];
+
+        return loop(newProgressiveScope, restOfGraphemes, "");
+      }
+      case " ": {
+        const updatedCurrentScope = tokenSoFar.length > 0
+          ? [...currentScope, typeify(tokenSoFar)]
+          : currentScope;
+
+        const newProgressiveScope = [
+          updatedCurrentScope,
+          parentScope,
+          ...outerScopes,
+        ];
+
+        return loop(
+          newProgressiveScope,
+          restOfGraphemes,
+        );
+      }
+      default:
+        return loop(
+          progressiveScope,
+          restOfGraphemes,
+          tokenSoFar + graphemeAtHand,
+        );
+    }
   };
 
   return loop([[]], graphemes);
 };
 
 const evaluate = (expression) => {
-  // If the expression is a number, return it
-  // If it is an array,
-  //   assume the first element is a function and the rest are arguments
-  //   evaluate the function with the arguments
+  if (typeof expression === "number") {
+    return expression;
+  }
 
-  throw new Error("Not implemented");
+  if (Array.isArray(expression)) {
+    const [operator, ...operands] = expression;
+
+    switch (operator) {
+      case atom("tone"):
+        return generatePCM(...operands);
+      case atom("sequence"):
+        throw new Error("Not implemented");
+      default:
+        throw new Error(
+          `🪈 Error: Unknown operator ....... \`${Symbol.keyFor(operator)}\``,
+        );
+    }
+  }
 };

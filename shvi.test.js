@@ -55,6 +55,25 @@ Deno.test("Playing things", async (t) => {
       console.log("Playing generated WAV file...");
       await play("output.wav");
     },
+    ignore: true,
+  });
+
+  await t.step({
+    name:
+      "playing an F4 for one second, a C4 for two seconds, and a G4 for one second",
+    fn: async () => {
+      const music = `
+                  (sequence (tone 349.23 100) (tone 261.63 200) (tone 392.00 100))
+              `;
+
+      const tokens = tokenize(music);
+      const samples = evaluate(tokens[0]);
+
+      encodeWAV(samples);
+
+      console.log("Playing generated WAV file...");
+      await play("output.wav");
+    },
     ignore: false,
   });
 });
