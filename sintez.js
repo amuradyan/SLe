@@ -85,5 +85,10 @@ const tokenize = (input) => {
 };
 
 const evaluate = (expression) => {
+  // If the expression is a number, return it
+  // If it is an array,
+  //   assume the first element is a function and the rest are arguments
+  //   evaluate the function with the arguments
+
   throw new Error("Not implemented");
 };
