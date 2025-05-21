@@ -1,5 +1,8 @@
 export { encodeWAV, evaluate, generatePCM, tokenize, typeify };
 
+const AMPLITUDE = 32767;
+const SAMPLE_RATE = 44100;
+
 // sample[n]= A ⋅ sin(2 * π * f * (n / R)​)
 
 // Where:
@@ -8,26 +11,70 @@ export { encodeWAV, evaluate, generatePCM, tokenize, typeify };
 //   R: Sample rate (samples per second), typically 44100 Hz
 //   n: Sample number (integer), from 0 to R × duration − 1
 
-function generatePCM(frequency, duration) {
-  const amplitude = 32767;
-  const sampleRate = 44100;
-
-  const numSamples = Math.floor(sampleRate * (duration / 1000));
-
-  const samples = [];
-  for (let i = 0; i < numSamples; i++) {
-    const t = i / sampleRate;
-    const sample = amplitude * Math.sin(2 * Math.PI * frequency * t);
-    samples.push(sample);
+function generatePCM(frequency, duration, offset = 0) {
+  function generateAttack(frequency, fadeSamples, offset) {
+    const samples = [];
+    for (let i = 0; i < fadeSamples; i++) {
+      const t = (offset + i) / SAMPLE_RATE;
+      const sample = AMPLITUDE * Math.sin(2 * Math.PI * frequency * t) *
+        (i / fadeSamples);
+      samples.push(sample);
+    }
+    return samples;
   }
+
+  function generateSustain(frequency, numSamples, offset) {
+    const samples = [];
+    for (let i = 0; i < numSamples; i++) {
+      const t = (offset + i) / SAMPLE_RATE;
+      const sample = AMPLITUDE * Math.sin(2 * Math.PI * frequency * t);
+      samples.push(sample);
+    }
+    return samples;
+  }
+
+  function generateDecay(frequency, fadeSamples, offset) {
+    const samples = [];
+
+    for (let i = 0; i < fadeSamples; i++) {
+      const t = (offset + i) / SAMPLE_RATE;
+      const sample = AMPLITUDE * Math.sin(2 * Math.PI * frequency * t) *
+        ((fadeSamples - i) / fadeSamples);
+      samples.push(sample);
+    }
+
+    return samples;
+  }
+
+  const numSamples = Math.floor(SAMPLE_RATE * (duration / 1000));
+  const fadeSamples = Math.floor(SAMPLE_RATE * 0.01); // 10ms fade
+  const sustainSamples = numSamples - 2 * fadeSamples;
+
+  const attack = generateAttack(frequency, fadeSamples, offset);
+  const sustain = generateSustain(
+    frequency,
+    sustainSamples,
+    offset + fadeSamples,
+  );
+  const decay = generateDecay(
+    frequency,
+    fadeSamples,
+    offset + fadeSamples + sustainSamples,
+  );
+
+  const samples = new Int16Array([...attack, ...sustain, ...decay]);
 
   return samples;
 }
 
-function sequence(...PCMs) {
-  throw new Error(
-    "🪈 The `sequence` function is not implemented yet.",
-  );
+function sequence(...tones) {
+  const samples = [];
+  for (const tone of tones) {
+    for (const PCM of tone) {
+      samples.push(PCM);
+    }
+  }
+  return samples;
 }
 
 async function encodeWAV(
@@ -163,8 +210,15 @@ const evaluate = (expression) => {
     switch (operator) {
       case atom("tone"):
         return generatePCM(...operands);
-      case atom("sequence"):
-        return sequence(...operands);
+      case atom("sequence"): {
+        const tonePCMs = operands.map(evaluate);
+        return sequence(tonePCMs);
+      }
+      case atom("parallel"): {
+        throw new Error(
+          "🪈 Error: Parallel is not implemented yet",
+        );
+      }
       default:
         throw new Error(
           `🪈 Error: Unknown operator ....... \`${Symbol.keyFor(operator)}\``,
