@@ -24,6 +24,12 @@ function generatePCM(frequency, duration) {
   return samples;
 }
 
+function sequence(...PCMs) {
+  throw new Error(
+    "🪈 The `sequence` function is not implemented yet.",
+  );
+}
+
 async function encodeWAV(
   samples,
   output = "output.wav",
@@ -158,7 +164,7 @@ const evaluate = (expression) => {
       case atom("tone"):
         return generatePCM(...operands);
       case atom("sequence"):
-        throw new Error("Not implemented");
+        return sequence(...operands);
       default:
         throw new Error(
           `🪈 Error: Unknown operator ....... \`${Symbol.keyFor(operator)}\``,
