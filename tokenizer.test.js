@@ -37,6 +37,24 @@ Deno.test("Tokenizer", async (t) => {
   });
 
   await t.step({
+    name: "regard whitespaces as delimiters",
+    fn: () => {
+      const result = tokenize(`
+        (sequence
+          (tone 261.63 1000)
+          (tone 293.66 2000))
+      `);
+      assertEquals(result, [
+        [atom("sequence"), [atom("tone"), 261.63, 1000], [
+          atom("tone"),
+          293.66,
+          2000,
+        ]],
+      ]);
+    },
+  });
+
+  await t.step({
     name: "tokenize Shvi code",
     fn: () => {
       const result = tokenize("tone 261.63 1000");
