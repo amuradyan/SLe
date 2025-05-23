@@ -1,0 +1,13 @@
+(repeat 3
+  (sequence
+    (repeat 8
+      (sequence
+        (tone 261.63 80) (tone 329.63 130) (tone 440.00 360)))
+
+    (repeat 3
+      (sequence
+        (tone 246.94 80) (tone 329.63 130) (tone 440.00 360)))
+
+    (repeat 5
+      (sequence
+        (tone 246.94 80) (tone 329.63 130) (tone 392.00 360)))))
