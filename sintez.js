@@ -1,4 +1,4 @@
-export { encodeWAV, evaluate, generatePCM, tokenize, typeify };
+export { encodeWAV, evaluate, generatePCM, run, tokenize, typeify };
 
 const AMPLITUDE = 32767;
 const SAMPLE_RATE = 44100;
@@ -12,7 +12,11 @@ const SAMPLE_RATE = 44100;
 //   n: Sample number (integer), from 0 to R × duration − 1
 
 function generatePCM(frequency, duration, offset = 0) {
-  function generateAttack(frequency, fadeSamples, offset) {
+  const totalSamples = Math.floor(SAMPLE_RATE * (duration / 1000));
+  const fadeSamples = Math.floor(SAMPLE_RATE * 0.01); // 10ms fade
+  const sustainSamples = totalSamples - 2 * fadeSamples;
+
+  const generateAttack = (frequency, fadeSamples, offset) => {
     const samples = [];
     for (let i = 0; i < fadeSamples; i++) {
       const t = (offset + i) / SAMPLE_RATE;
@@ -21,9 +25,9 @@ function generatePCM(frequency, duration, offset = 0) {
       samples.push(sample);
     }
     return samples;
-  }
+  };
 
-  function generateSustain(frequency, numSamples, offset) {
+  const generateSustain = (frequency, numSamples, offset) => {
     const samples = [];
     for (let i = 0; i < numSamples; i++) {
       const t = (offset + i) / SAMPLE_RATE;
@@ -31,9 +35,9 @@ function generatePCM(frequency, duration, offset = 0) {
       samples.push(sample);
     }
     return samples;
-  }
+  };
 
-  function generateDecay(frequency, fadeSamples, offset) {
+  const generateDecay = (frequency, fadeSamples, offset) => {
     const samples = [];
 
     for (let i = 0; i < fadeSamples; i++) {
@@ -44,11 +48,7 @@ function generatePCM(frequency, duration, offset = 0) {
     }
 
     return samples;
-  }
-
-  const numSamples = Math.floor(SAMPLE_RATE * (duration / 1000));
-  const fadeSamples = Math.floor(SAMPLE_RATE * 0.01); // 10ms fade
-  const sustainSamples = numSamples - 2 * fadeSamples;
+  };
 
   const attack = generateAttack(frequency, fadeSamples, offset);
   const sustain = generateSustain(
@@ -67,14 +67,16 @@ function generatePCM(frequency, duration, offset = 0) {
   return samples;
 }
 
-function sequence(...tones) {
-  const samples = [];
-  for (const tone of tones) {
-    for (const PCM of tone) {
-      samples.push(PCM);
-    }
-  }
-  return samples;
+function sequence(...PCMs) {
+  const totalSamples = PCMs.reduce((acc, pcm) => acc + pcm.length, 0);
+  const combinedSamples = new Int16Array(totalSamples);
+
+  PCMs.reduce((offset, pcm) => {
+    combinedSamples.set(pcm, offset);
+    return offset + pcm.length;
+  }, 0);
+
+  return combinedSamples;
 }
 
 async function encodeWAV(
@@ -210,13 +212,11 @@ const evaluate = (expression) => {
     switch (operator) {
       case atom("tone"):
         return generatePCM(...operands);
-      case atom("sequence"): {
-        const tonePCMs = operands.map(evaluate);
-        return sequence(tonePCMs);
-      }
+      case atom("sequence"):
+        return sequence(...operands.map(evaluate));
       case atom("parallel"): {
         throw new Error(
-          "🪈 Error: Parallel is not implemented yet",
+          "🪈 Error: Parallel operator is not implemented yet.",
         );
       }
       default:
@@ -225,4 +225,10 @@ const evaluate = (expression) => {
         );
     }
   }
+};
+
+const run = (input) => {
+  const tokens = tokenize(input);
+  const expression = tokens[0];
+  return evaluate(expression);
 };
