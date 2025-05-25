@@ -84,7 +84,7 @@ deno test --watch --allow-all tokenizer.test.js
 After that, you can run the tests in the `evaluator.test.js` file and move on to the evaluator implementation:
 
 ```bash
-deno test --watch --allow-all evaluator.test.js
+deno test --watch --allow-all shvi.test.js
 ```
 
-Once your all the tests are passing, you can move on to the next step.
+Once all the tests are passing, you can move on to the next step.

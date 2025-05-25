@@ -1,4 +1,4 @@
-import { assertEquals, fail } from "jsr:@std/assert";
+import { assertEquals } from "jsr:@std/assert";
 
 Deno.test("Recursion", async (t) => {
   await t.step({

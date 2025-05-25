@@ -21,7 +21,12 @@ Deno.test("Recursion", async (t) => {
       ];
 
       const busServesLine = (line, bus) => {
-        throw new Error("");
+        const lineData = linesAndBuses.find(([lineNumber]) =>
+          lineNumber === line
+        );
+        if (!lineData) return false;
+        const [, buses] = lineData;
+        return buses.includes(bus);
       };
 
       const generalResult = busServesLine(5, 77);
@@ -45,7 +50,13 @@ Deno.test("Recursion", async (t) => {
       // If the first and last characters are not equal, return false
 
       const isPalindrome = (str) => {
-        throw new Error("Not implemented");
+        const cleanStr = str.replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
+        const checkPalindrome = (start, end) => {
+          if (start >= end) return true;
+          if (cleanStr[start] !== cleanStr[end]) return false;
+          return checkPalindrome(start + 1, end - 1);
+        };
+        return checkPalindrome(0, cleanStr.length - 1);
       };
 
       const generalResult = isPalindrome("racecar");
@@ -66,7 +77,41 @@ Deno.test("Recursion", async (t) => {
       // Once the current chain is over, check if it is longer than the longest chain and replace if so
 
       const longestRepeatingCharacterChain = (str) => {
-        throw new Error("Not implemented");
+        if (str.length === 0) return "";
+
+        const findLongestChain = (
+          remaining,
+          currentChar,
+          currentCount,
+          maxChar,
+          maxCount,
+        ) => {
+          if (remaining.length === 0) {
+            return currentCount > maxCount
+              ? { char: currentChar, count: currentCount }
+              : { char: maxChar, count: maxCount };
+          }
+
+          const [head, ...tail] = remaining;
+
+          if (head === currentChar) {
+            return findLongestChain(
+              tail,
+              currentChar,
+              currentCount + 1,
+              maxChar,
+              maxCount,
+            );
+          } else {
+            const newMax = currentCount > maxCount
+              ? { char: currentChar, count: currentCount }
+              : { char: maxChar, count: maxCount };
+            return findLongestChain(tail, head, 1, newMax.char, newMax.count);
+          }
+        };
+
+        const result = findLongestChain(str.slice(1), str[0], 1, str[0], 1);
+        return result.char.repeat(result.count);
       };
 
       const generalResult = longestRepeatingCharacterChain("222aabbbbcc");

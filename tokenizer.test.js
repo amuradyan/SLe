@@ -1,5 +1,5 @@
 import { tokenize } from "./sintez.js";
-import { assertEquals, fail } from "jsr:@std/assert";
+import { assertEquals } from "jsr:@std/assert";
 
 const atom = (name) => Symbol.for(name);
 

@@ -3,7 +3,7 @@ export { encodeWAV, evaluate, generatePCM, run, tokenize, typeify };
 const AMPLITUDE = 32767;
 const SAMPLE_RATE = 44100;
 
-// sample[n]= A ⋅ sin(2 * π * f * (n / R)​)
+// sample[n]= A ⋅ sin(2 * π * f * (n / R))
 
 // Where:
 //   A: Amplitude (max value based on bit depth, e.g., 32767 for 16-bit)
@@ -90,6 +90,16 @@ function parallel(...PCMs) {
     combinedSamples[i] = averageSample;
   }
   return combinedSamples;
+}
+
+function repeat(times, PCM) {
+  const samples = [];
+  for (let i = 0; i < times; i++) {
+    for (const point of PCM) {
+      samples.push(point);
+    }
+  }
+  return samples;
 }
 
 async function encodeWAV(
@@ -232,7 +242,7 @@ const evaluate = (expression) => {
         return parallel(...operands.map(evaluate));
       }
       case atom("repeat"): {
-        throw new Error("🪈 Error: `repeat` is not implemented yet.");
+        return repeat(...operands.map(evaluate));
       }
       default:
         throw new Error(
