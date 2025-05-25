@@ -123,4 +123,27 @@ Deno.test("Recursion", async (t) => {
       assertEquals(nonRepeatingResult, "a");
     },
   });
+  await t.step({
+    name: "How high?",
+    fn: () => {
+      const buildingsAndHeights = [
+        ["Empire State Building", 443],
+        ["Burj Khalifa", 828],
+        ["Shanghai Tower", 632],
+        ["One World Trade Center", 541],
+        ["Taipei 101", 508],
+      ];
+
+      const howHigh = (building) => {
+        throw new Error("Implement me!");
+      };
+
+      const generalResult = howHigh("Burj Khalifa");
+      const nonExistentBuildingResult = howHigh("Hanoi Tower");
+      const emptyBuildingResult = howHigh("");
+      assertEquals(generalResult, 828);
+      assertEquals(nonExistentBuildingResult, -1);
+      assertEquals(emptyBuildingResult, -1);
+    },
+  });
 });

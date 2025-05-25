@@ -121,4 +121,30 @@ Deno.test("Playing things", async (t) => {
     },
     ignore: true,
   });
+
+  await t.step({
+    name: "Seven nation army, with notes",
+    fn: async () => {
+      const music = `
+            (sequence
+              (tone E3 1500) (silence 500)
+              (tone E3 500)  (silence 200)
+              (tone G3 500)  (silence 300)
+              (tone E3 500)  (silence 300)
+              (tone D3 500)  (silence 200)
+              (tone C3 1500) (silence 500)
+              (tone B2 1500))
+            `;
+
+      const tokens = tokenize(music);
+      const samples = evaluate(tokens[0]);
+
+      encodeWAV(samples);
+
+      console.log("Playing generated WAV file...");
+      await play("output.wav");
+      Deno.removeSync("output.wav");
+    },
+    ignore: false,
+  });
 });

@@ -230,25 +230,19 @@ const evaluate = (expression) => {
     return expression;
   }
 
+  // Handle the symbols
+  if (typeof expression === "symbol") {
+    throw new Error(
+      `🪈 Error: Unknown symbol ....... \`${Symbol.keyFor(expression)}\``,
+    );
+  }
+
   if (Array.isArray(expression)) {
     const [operator, ...operands] = expression;
 
-    switch (operator) {
-      case atom("tone"):
-        return generatePCM(...operands);
-      case atom("sequence"):
-        return sequence(...operands.map(evaluate));
-      case atom("parallel"): {
-        return parallel(...operands.map(evaluate));
-      }
-      case atom("repeat"): {
-        return repeat(...operands.map(evaluate));
-      }
-      default:
-        throw new Error(
-          `🪈 Error: Unknown operator ....... \`${Symbol.keyFor(operator)}\``,
-        );
-    }
+    throw new Error(
+      `🪈 Implement the application of an operand to operators`,
+    );
   }
 };
 
@@ -257,3 +251,9 @@ const run = (input) => {
   const expression = tokens[0];
   return evaluate(expression);
 };
+
+const environment = [
+  // Fill in the commands, such as `tone` and `sequence` here
+  [atom("C0"), 16.35],
+  // Fill in the rest of the notes here
+];
