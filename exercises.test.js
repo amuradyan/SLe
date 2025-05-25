@@ -135,7 +135,11 @@ Deno.test("Recursion", async (t) => {
       ];
 
       const howHigh = (building) => {
-        throw new Error("Implement me!");
+        if (building === "") return -1;
+        const foundBuilding = buildingsAndHeights.find(
+          ([name]) => name === building,
+        );
+        return foundBuilding ? foundBuilding[1] : -1;
       };
 
       const generalResult = howHigh("Burj Khalifa");

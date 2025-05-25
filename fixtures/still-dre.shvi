@@ -1,13 +1,21 @@
-(repeat 3
+(define first-phrase
   (sequence
-    (repeat 8
-      (sequence
-        (tone 261.63 80) (tone 329.63 130) (tone 440.00 360)))
+    (tone C4 80) (tone E4 130) (tone A4 360)))
 
-    (repeat 3
-      (sequence
-        (tone 246.94 80) (tone 329.63 130) (tone 440.00 360)))
+(define second-phrase
+  (sequence
+    (tone B3 80) (tone E4 130) (tone A4 360)))
 
-    (repeat 5
-      (sequence
-        (tone 246.94 80) (tone 329.63 130) (tone 392.00 360)))))
+(define third-phrase
+  (sequence
+    (tone B3 80) (tone E4 130) (tone G4 360)))
+
+(define the-beat
+  (sequence
+      (repeat 8 first-phrase)
+      (repeat 3 second-phrase)
+      (repeat 5 third-phrase)))
+
+(define thrice 3)
+
+(repeat thrice the-beat)
